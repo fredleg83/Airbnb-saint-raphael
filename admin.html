@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Administration Airbnb Saint‑Raphaël</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#eef6fb;color:#173b60}
+.wrap{max-width:760px;margin:auto;padding:22px}
+.card{background:white;border-radius:22px;padding:22px;box-shadow:0 12px 38px rgba(18,55,88,.15)}
+h1{margin-top:0;color:#0b376b;font-size:30px}
+label{display:block;font-weight:800;margin:16px 0 7px}
+input,textarea{box-sizing:border-box;width:100%;font:inherit;padding:13px 14px;border:1px solid #c8d9e7;border-radius:12px;background:#fbfdff}
+textarea{min-height:100px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:white;padding:15px;font-size:18px;font-weight:800}
+button:disabled{opacity:.55}
+.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa}
+.note{font-size:14px;color:#5e7489;line-height:1.45}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>🏠 Écran Airbnb — Administration</h1>
+    <p>Modifie ici les informations affichées sur l’iMac.</p>
+
+    <form id="adminForm" method="POST" action="https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec" target="saveFrame">
+      <label for="secret">Code secret</label>
+      <input id="secret" name="secret" type="password" placeholder="Votre code secret" required>
+
+      <label for="guestName">Nom du ou des voyageurs</label>
+      <input id="guestName" name="guestName" placeholder="Ex. Sophie et Marc">
+
+      <label for="welcomeMessage">Message de bienvenue</label>
+      <textarea id="welcomeMessage" name="welcomeMessage">Profitez pleinement de votre séjour ! ♡</textarea>
+
+      <div class="grid">
+        <div>
+          <label for="stayStart">Date d’arrivée</label>
+          <input id="stayStart" name="stayStart" type="date">
+        </div>
+        <div>
+          <label for="stayEnd">Date de départ</label>
+          <input id="stayEnd" name="stayEnd" type="date">
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label for="arrivalTime">Heure d’arrivée</label>
+          <input id="arrivalTime" name="arrivalTime" type="time" value="15:00">
+        </div>
+        <div>
+          <label for="departureTime">Heure de départ</label>
+          <input id="departureTime" name="departureTime" type="time" value="11:00">
+        </div>
+      </div>
+
+      <label for="customNotice">Message exceptionnel</label>
+      <textarea id="customNotice" name="customNotice" placeholder="Ex. Le marché nocturne a lieu ce soir sur le front de mer."></textarea>
+
+      <button id="saveBtn" type="submit">Enregistrer sur l’écran</button>
+    </form>
+
+    <iframe name="saveFrame" id="saveFrame" style="display:none"></iframe>
+    <div id="status" class="status">Prêt.</div>
+    <p class="note">Après l’enregistrement, attends environ une minute puis actualise l’écran principal si nécessaire.</p>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById("adminForm");
+const statusBox = document.getElementById("status");
+const saveBtn = document.getElementById("saveBtn");
+const frame = document.getElementById("saveFrame");
+let pending = false;
+
+form.addEventListener("submit", function() {
+  pending = true;
+  saveBtn.disabled = true;
+  statusBox.textContent = "Enregistrement…";
+});
+
+frame.addEventListener("load", function() {
+  if (!pending) return;
+  pending = false;
+  saveBtn.disabled = false;
+  statusBox.textContent = "✅ Envoi effectué. L’écran principal récupérera les nouvelles informations automatiquement.";
+});
+</script>
+</body>
+</html>
