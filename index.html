@@ -544,10 +544,8 @@ h1 {
 </script>
 
 
-
-
-
 <script>
+/* ====== PARAMÈTRES DISTANTS — version JSONP compatible Safari/GitHub Pages ====== */
 const REMOTE_CONFIG_URL = "https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec";
 
 const DEFAULT_CONFIG = {
@@ -568,12 +566,11 @@ function formatDateFR(value){
 
 function applyRemoteConfig(c){
   const cfg = Object.assign({}, DEFAULT_CONFIG, c || {});
-
-  const welcome = document.getElementById("welcomeMessage");
-  if(welcome) welcome.textContent = cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage;
+  document.getElementById("welcomeMessage").textContent =
+    cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage;
 
   const guestLine = document.getElementById("guestLine");
-  if(guestLine) guestLine.textContent = cfg.guestName ? "Bienvenue " + cfg.guestName + " !" : "";
+  guestLine.textContent = cfg.guestName ? "Bienvenue " + cfg.guestName + " !" : "";
 
   const start = formatDateFR(cfg.stayStart);
   const end = formatDateFR(cfg.stayEnd);
@@ -582,46 +579,66 @@ function applyRemoteConfig(c){
   else if(start) dates = "Arrivée le " + start;
   else if(end) dates = "Départ le " + end;
 
-  const stayDates = document.getElementById("stayDates");
-  if(stayDates) stayDates.textContent = dates || "Bienvenue dans l’appartement.";
+  document.getElementById("stayDates").textContent =
+    dates || "Bienvenue dans l’appartement.";
 
-  const arrival = document.getElementById("arrivalInfo");
-  if(arrival) arrival.textContent = cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
+  document.getElementById("arrivalInfo").textContent =
+    cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
 
-  const departure = document.getElementById("departureInfo");
-  if(departure) departure.textContent = cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
+  document.getElementById("departureInfo").textContent =
+    cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
 
   const notice = document.getElementById("customNotice");
-  if(notice){
-    if(cfg.customNotice){
-      notice.style.display = "block";
-      notice.textContent = cfg.customNotice;
-    } else {
-      notice.style.display = "none";
-      notice.textContent = "";
-    }
+  if(cfg.customNotice){
+    notice.style.display = "block";
+    notice.textContent = cfg.customNotice;
+  } else {
+    notice.style.display = "none";
+    notice.textContent = "";
   }
 }
 
-window.airbnbScreenConfig = function(data){
+let remoteScript = null;
+let remoteTimer = null;
+
+window.__airbnbReceiveConfig = function(data){
   applyRemoteConfig(data);
+  if(remoteTimer) clearTimeout(remoteTimer);
+  if(remoteScript) {
+    remoteScript.remove();
+    remoteScript = null;
+  }
 };
 
 function loadRemoteConfig(){
-  const old = document.getElementById("remoteConfigJsonp");
-  if(old) old.remove();
+  if(remoteScript) remoteScript.remove();
 
-  const s = document.createElement("script");
-  s.id = "remoteConfigJsonp";
-  s.src = REMOTE_CONFIG_URL + "?callback=airbnbScreenConfig&t=" + Date.now();
-  s.onerror = function(){
-    console.warn("Configuration distante indisponible");
+  remoteScript = document.createElement("script");
+  const sep = REMOTE_CONFIG_URL.includes("?") ? "&" : "?";
+  remoteScript.src =
+    REMOTE_CONFIG_URL + sep +
+    "callback=__airbnbReceiveConfig&t=" + Date.now();
+
+  remoteScript.onerror = function(){
+    console.warn("Configuration distante momentanément indisponible.");
+    if(remoteScript) {
+      remoteScript.remove();
+      remoteScript = null;
+    }
   };
-  document.body.appendChild(s);
+
+  document.head.appendChild(remoteScript);
+
+  remoteTimer = setTimeout(function(){
+    if(remoteScript) {
+      remoteScript.remove();
+      remoteScript = null;
+    }
+  }, 10000);
 }
 
 loadRemoteConfig();
-setInterval(loadRemoteConfig, 60 * 1000);
+setInterval(loadRemoteConfig, 30 * 1000);
 </script>
 
 </body>

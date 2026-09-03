@@ -15,7 +15,7 @@ textarea{min-height:100px;resize:vertical}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:white;padding:15px;font-size:18px;font-weight:800}
 button:disabled{opacity:.55}
-.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa}
+.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa;line-height:1.4}
 .note{font-size:14px;color:#5e7489;line-height:1.45}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 </style>
@@ -61,33 +61,86 @@ button:disabled{opacity:.55}
       <label for="customNotice">Message exceptionnel</label>
       <textarea id="customNotice" name="customNotice" placeholder="Ex. Le marché nocturne a lieu ce soir sur le front de mer."></textarea>
 
+      <input type="hidden" id="_nonce" name="_nonce" value="">
       <button id="saveBtn" type="submit">Enregistrer sur l’écran</button>
     </form>
 
     <iframe name="saveFrame" id="saveFrame" style="display:none"></iframe>
-    <div id="status" class="status">Prêt.</div>
-    <p class="note">Après l’enregistrement, attends environ une minute puis actualise l’écran principal si nécessaire.</p>
+    <div id="status" class="status">Chargement des informations…</div>
+    <p class="note">L’écran principal vérifie les nouvelles informations toutes les 30 secondes.</p>
   </div>
 </div>
 
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec";
+const ids = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
 const form = document.getElementById("adminForm");
+const frame = document.getElementById("saveFrame");
 const statusBox = document.getElementById("status");
 const saveBtn = document.getElementById("saveBtn");
-const frame = document.getElementById("saveFrame");
-let pending = false;
+let pendingNonce = "";
+let verifyAttempts = 0;
+let scriptNode = null;
 
-form.addEventListener("submit", function() {
-  pending = true;
+function fill(c){
+  if(!c) return;
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && Object.prototype.hasOwnProperty.call(c,id)) el.value = c[id] || "";
+  });
+}
+
+function jsonp(callbackName, onError){
+  if(scriptNode) scriptNode.remove();
+  scriptNode = document.createElement("script");
+  const sep = API_URL.includes("?") ? "&" : "?";
+  scriptNode.src = API_URL + sep + "callback=" + callbackName + "&t=" + Date.now();
+  scriptNode.onerror = onError || function(){};
+  document.head.appendChild(scriptNode);
+}
+
+window.__adminLoad = function(data){
+  fill(data);
+  statusBox.textContent = "✅ Informations chargées.";
+  if(scriptNode) { scriptNode.remove(); scriptNode = null; }
+};
+
+window.__adminVerify = function(data){
+  if(scriptNode) { scriptNode.remove(); scriptNode = null; }
+  if(data && data._nonce === pendingNonce){
+    saveBtn.disabled = false;
+    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour sous 30 secondes.";
+    pendingNonce = "";
+    return;
+  }
+  verifyAttempts++;
+  if(verifyAttempts < 6){
+    setTimeout(() => jsonp("__adminVerify", verifyFailed), 800);
+  } else {
+    verifyFailed();
+  }
+};
+
+function verifyFailed(){
+  saveBtn.disabled = false;
+  statusBox.textContent = "⚠️ Envoi effectué mais vérification impossible. Ouvre l’URL Apps Script /exec pour contrôler les données.";
+}
+
+jsonp("__adminLoad", function(){
+  statusBox.textContent = "⚠️ Impossible de charger les données actuelles, mais l’enregistrement reste disponible.";
+});
+
+form.addEventListener("submit", function(){
+  pendingNonce = Date.now().toString(36) + Math.random().toString(36).slice(2);
+  document.getElementById("_nonce").value = pendingNonce;
+  verifyAttempts = 0;
   saveBtn.disabled = true;
   statusBox.textContent = "Enregistrement…";
 });
 
-frame.addEventListener("load", function() {
-  if (!pending) return;
-  pending = false;
-  saveBtn.disabled = false;
-  statusBox.textContent = "✅ Envoi effectué. L’écran principal récupérera les nouvelles informations automatiquement.";
+frame.addEventListener("load", function(){
+  if(!pendingNonce) return;
+  setTimeout(() => jsonp("__adminVerify", verifyFailed), 600);
 });
 </script>
 </body>
