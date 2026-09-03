@@ -34,7 +34,7 @@ button:disabled{opacity:.55}
     <h1>🏠 Écran Airbnb — Administration</h1>
     <p>Modifie ici les informations affichées sur l’écran d’accueil.</p>
 
-    <form id="adminForm" method="POST" action="https://script.google.com/macros/s/AKfycbw0Nkp3pvMN2fqTNjGBwmuKOVGRenwSCaF6_Oji3Nv9Idee7wvS7Ti5gYkgvekALi3E/exec" target="saveFrame">
+    <form id="adminForm">
       <label for="secret">Code secret</label>
       <input id="secret" name="secret" type="password" required>
 
@@ -81,8 +81,6 @@ button:disabled{opacity:.55}
       <input type="hidden" id="_nonce" name="_nonce">
       <button id="saveBtn" type="submit">Enregistrer sur l’écran</button>
     </form>
-
-    <iframe name="saveFrame" id="saveFrame" style="display:none"></iframe>
     <div id="status" class="status">Chargement des informations…</div>
     <p class="note">Après validation, l’écran principal récupère automatiquement les nouvelles informations.</p>
   </div>
@@ -92,20 +90,21 @@ button:disabled{opacity:.55}
 const API_URL = "https://script.google.com/macros/s/AKfycbw0Nkp3pvMN2fqTNjGBwmuKOVGRenwSCaF6_Oji3Nv9Idee7wvS7Ti5gYkgvekALi3E/exec";
 const fields = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
 const form = document.getElementById("adminForm");
-const frame = document.getElementById("saveFrame");
 const saveBtn = document.getElementById("saveBtn");
 const statusBox = document.getElementById("status");
-let pendingNonce = "";
 
 let inventoryData = [];
+let activeScript = null;
 
 function escapeAdmin(s){
   return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
+
 function renderInventoryAdmin(){
   const box = document.getElementById("inventoryRows");
   if(!box) return;
   box.innerHTML = "";
+
   inventoryData.forEach((item,i)=>{
     const row = document.createElement("div");
     row.className = "inv-row";
@@ -124,6 +123,7 @@ function renderInventoryAdmin(){
       inventoryData[i][el.dataset.k] = el.value;
     });
   });
+
   box.querySelectorAll("[data-remove]").forEach(btn=>{
     btn.addEventListener("click",()=>{
       inventoryData.splice(Number(btn.dataset.remove),1);
@@ -131,79 +131,89 @@ function renderInventoryAdmin(){
     });
   });
 }
+
 document.getElementById("addInventory").addEventListener("click",()=>{
   inventoryData.push({name:"",qty:"1",category:"",location:""});
   renderInventoryAdmin();
 });
 
-let attempts = 0;
-let node = null;
+function jsonp(url, callbackName, onError){
+  if (activeScript) {
+    activeScript.remove();
+    activeScript = null;
+  }
 
-function jsonp(callback, errorHandler) {
-  if (node) node.remove();
-  node = document.createElement("script");
-  const sep = API_URL.includes("?") ? "&" : "?";
-  node.src = API_URL + sep + "callback=" + callback + "&t=" + Date.now();
-  node.onerror = errorHandler || function(){};
-  document.head.appendChild(node);
+  activeScript = document.createElement("script");
+  const sep = url.includes("?") ? "&" : "?";
+  activeScript.src = url + sep + "callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
+  activeScript.onerror = onError || function(){};
+  document.head.appendChild(activeScript);
 }
 
-window.__loadAdmin = function(data) {
-  fields.forEach(function(id) {
+window.__loadAdmin = function(data){
+  fields.forEach(function(id){
     const el = document.getElementById(id);
     if (el && data && Object.prototype.hasOwnProperty.call(data,id)) {
       el.value = data[id] || "";
     }
   });
+
   inventoryData = Array.isArray(data && data.inventory) ? data.inventory : [];
   renderInventoryAdmin();
+
   statusBox.textContent = "✅ Informations chargées.";
-  if (node) { node.remove(); node = null; }
-};
-
-window.__verifyAdmin = function(data) {
-  if (node) { node.remove(); node = null; }
-
-  if (data && data._nonce === pendingNonce) {
-    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour.";
-    saveBtn.disabled = false;
-    pendingNonce = "";
-    return;
-  }
-
-  attempts++;
-  if (attempts < 8) {
-    setTimeout(function() {
-      jsonp("__verifyAdmin", verifyFailed);
-    }, 700);
-  } else {
-    verifyFailed();
+  if (activeScript) {
+    activeScript.remove();
+    activeScript = null;
   }
 };
 
-function verifyFailed() {
+window.__saveAdmin = function(result){
+  if (activeScript) {
+    activeScript.remove();
+    activeScript = null;
+  }
+
   saveBtn.disabled = false;
-  statusBox.textContent = "⚠️ Envoi effectué, mais la vérification automatique a échoué.";
-}
 
-jsonp("__loadAdmin", function() {
+  if (result && result.ok) {
+    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour.";
+  } else {
+    statusBox.textContent = "❌ Échec de l’enregistrement : " + ((result && result.error) ? result.error : "erreur inconnue");
+  }
+};
+
+jsonp(API_URL + "?action=get", "__loadAdmin", function(){
   statusBox.textContent = "⚠️ Impossible de charger les données actuelles.";
 });
 
-form.addEventListener("submit", function() {
-  pendingNonce = Date.now().toString(36) + Math.random().toString(36).slice(2);
-  document.getElementById("inventory").value = JSON.stringify(inventoryData);
-  document.getElementById("_nonce").value = pendingNonce;
-  attempts = 0;
+form.addEventListener("submit", function(ev){
+  ev.preventDefault();
+
+  const secret = document.getElementById("secret").value;
+  if (!secret) {
+    statusBox.textContent = "⚠️ Entre le code secret.";
+    return;
+  }
+
+  const params = new URLSearchParams();
+  params.set("action", "set");
+  params.set("secret", secret);
+
+  fields.forEach(function(id){
+    params.set(id, document.getElementById(id).value || "");
+  });
+
+  params.set("inventory", JSON.stringify(inventoryData));
+  params.set("_nonce", Date.now().toString(36) + Math.random().toString(36).slice(2));
+
   saveBtn.disabled = true;
   statusBox.textContent = "Enregistrement…";
-});
 
-frame.addEventListener("load", function() {
-  if (!pendingNonce) return;
-  setTimeout(function() {
-    jsonp("__verifyAdmin", verifyFailed);
-  }, 700);
+  jsonp(API_URL + "?" + params.toString(), "__saveAdmin", function(){
+    saveBtn.disabled = false;
+    statusBox.textContent = "❌ Impossible de joindre Apps Script.";
+  });
 });
 </script>
 </body>
