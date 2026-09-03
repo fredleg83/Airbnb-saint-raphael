@@ -7,89 +7,204 @@
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#eef6fb;color:#173b60}
 .wrap{max-width:760px;margin:auto;padding:22px}
-.card{background:#fff;border-radius:22px;padding:22px;box-shadow:0 12px 38px rgba(18,55,88,.15)}
+.card{background:white;border-radius:22px;padding:22px;box-shadow:0 12px 38px rgba(18,55,88,.15)}
 h1{margin-top:0;color:#0b376b;font-size:30px}
 label{display:block;font-weight:800;margin:16px 0 7px}
 input,textarea{box-sizing:border-box;width:100%;font:inherit;padding:13px 14px;border:1px solid #c8d9e7;border-radius:12px;background:#fbfdff}
 textarea{min-height:100px;resize:vertical}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:#fff;padding:15px;font-size:18px;font-weight:800}
+button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:white;padding:15px;font-size:18px;font-weight:800}
 button:disabled{opacity:.55}
-.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa;line-height:1.45}
+.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa;line-height:1.4}
 .note{font-size:14px;color:#5e7489;line-height:1.45}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+.inventory-admin{margin-top:24px;border-top:1px solid #dbe8f1;padding-top:20px}
+.inv-row{display:grid;grid-template-columns:2fr .7fr 1fr 1.4fr auto;gap:8px;align-items:center;margin:8px 0}
+.inv-row input{margin:0}
+.inv-remove{width:auto;margin:0;background:#b33;padding:10px 12px}
+.inv-add{width:auto;background:#18784c;margin:10px 0 0;padding:11px 14px}
+@media(max-width:700px){.inv-row{grid-template-columns:1fr 1fr}.inv-row .wide{grid-column:1/-1}.inv-remove{grid-column:1/-1}}
+
 </style>
 </head>
 <body>
-<div class="wrap"><div class="card">
-<h1>🏠 Écran Airbnb — Administration</h1>
-<label>Code secret</label><input id="secret" type="password" placeholder="Votre code secret">
-<label>Nom du ou des voyageurs</label><input id="guestName">
-<label>Message de bienvenue</label><textarea id="welcomeMessage">Profitez pleinement de votre séjour ! ♡</textarea>
-<div class="grid">
-<div><label>Date d’arrivée</label><input id="stayStart" type="date"></div>
-<div><label>Date de départ</label><input id="stayEnd" type="date"></div>
+<div class="wrap">
+  <div class="card">
+    <h1>🏠 Écran Airbnb — Administration</h1>
+    <p>Modifie ici les informations affichées sur l’écran d’accueil.</p>
+
+    <form id="adminForm" method="POST" action="https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec" target="saveFrame">
+      <label for="secret">Code secret</label>
+      <input id="secret" name="secret" type="password" required>
+
+      <label for="guestName">Nom du ou des voyageurs</label>
+      <input id="guestName" name="guestName" placeholder="Ex. Sophie et Marc">
+
+      <label for="welcomeMessage">Message de bienvenue</label>
+      <textarea id="welcomeMessage" name="welcomeMessage">Profitez pleinement de votre séjour ! ♡</textarea>
+
+      <div class="grid">
+        <div>
+          <label for="stayStart">Date d’arrivée</label>
+          <input id="stayStart" name="stayStart" type="date">
+        </div>
+        <div>
+          <label for="stayEnd">Date de départ</label>
+          <input id="stayEnd" name="stayEnd" type="date">
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label for="arrivalTime">Heure d’arrivée</label>
+          <input id="arrivalTime" name="arrivalTime" type="time" value="15:00">
+        </div>
+        <div>
+          <label for="departureTime">Heure de départ</label>
+          <input id="departureTime" name="departureTime" type="time" value="11:00">
+        </div>
+      </div>
+
+      <label for="customNotice">Message exceptionnel</label>
+      <textarea id="customNotice" name="customNotice" placeholder="Ex. Le marché nocturne a lieu ce soir sur le front de mer."></textarea>
+
+
+    <div class="inventory-admin">
+      <h2>📦 Inventaire</h2>
+      <p class="note">Ajoute, modifie ou supprime les objets visibles dans la rubrique Inventaire.</p>
+      <div id="inventoryRows"></div>
+      <button type="button" class="inv-add" id="addInventory">+ Ajouter un objet</button>
+      <input type="hidden" id="inventory" name="inventory">
+    </div>
+
+      <input type="hidden" id="_nonce" name="_nonce">
+      <button id="saveBtn" type="submit">Enregistrer sur l’écran</button>
+    </form>
+
+    <iframe name="saveFrame" id="saveFrame" style="display:none"></iframe>
+    <div id="status" class="status">Chargement des informations…</div>
+    <p class="note">Après validation, l’écran principal récupère automatiquement les nouvelles informations.</p>
+  </div>
 </div>
-<div class="grid">
-<div><label>Heure d’arrivée</label><input id="arrivalTime" type="time" value="15:00"></div>
-<div><label>Heure de départ</label><input id="departureTime" type="time" value="11:00"></div>
-</div>
-<label>Message exceptionnel</label><textarea id="customNotice"></textarea>
-<button id="saveBtn">Enregistrer sur l’écran</button>
-<div id="status" class="status">Chargement…</div>
-<p class="note">L’écran principal vérifie les nouvelles informations toutes les 30 secondes.</p>
-</div></div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec";
 const fields = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
+const form = document.getElementById("adminForm");
+const frame = document.getElementById("saveFrame");
+const saveBtn = document.getElementById("saveBtn");
+const statusBox = document.getElementById("status");
+let pendingNonce = "";
+
+let inventoryData = [];
+
+function escapeAdmin(s){
+  return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function renderInventoryAdmin(){
+  const box = document.getElementById("inventoryRows");
+  if(!box) return;
+  box.innerHTML = "";
+  inventoryData.forEach((item,i)=>{
+    const row = document.createElement("div");
+    row.className = "inv-row";
+    row.innerHTML =
+      '<input class="wide" data-k="name" data-i="'+i+'" placeholder="Objet" value="'+escapeAdmin(item.name||"")+'">' +
+      '<input data-k="qty" data-i="'+i+'" placeholder="Qté" value="'+escapeAdmin(item.qty||"")+'">' +
+      '<input data-k="category" data-i="'+i+'" placeholder="Catégorie" value="'+escapeAdmin(item.category||"")+'">' +
+      '<input data-k="location" data-i="'+i+'" placeholder="Emplacement" value="'+escapeAdmin(item.location||"")+'">' +
+      '<button type="button" class="inv-remove" data-remove="'+i+'">Supprimer</button>';
+    box.appendChild(row);
+  });
+
+  box.querySelectorAll("input[data-i]").forEach(el=>{
+    el.addEventListener("input",()=>{
+      const i = Number(el.dataset.i);
+      inventoryData[i][el.dataset.k] = el.value;
+    });
+  });
+  box.querySelectorAll("[data-remove]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      inventoryData.splice(Number(btn.dataset.remove),1);
+      renderInventoryAdmin();
+    });
+  });
+}
+document.getElementById("addInventory").addEventListener("click",()=>{
+  inventoryData.push({name:"",qty:"1",category:"",location:""});
+  renderInventoryAdmin();
+});
+
+let attempts = 0;
 let node = null;
 
-function jsonp(params, cb, onError) {
+function jsonp(callback, errorHandler) {
   if (node) node.remove();
-  const q = new URLSearchParams(params);
-  q.set("callback", cb);
-  q.set("t", Date.now());
   node = document.createElement("script");
-  node.src = API_URL + "?" + q.toString();
-  node.onerror = onError || function(){};
+  const sep = API_URL.includes("?") ? "&" : "?";
+  node.src = API_URL + sep + "callback=" + callback + "&t=" + Date.now();
+  node.onerror = errorHandler || function(){};
   document.head.appendChild(node);
 }
 
 window.__loadAdmin = function(data) {
-  fields.forEach(id => {
-    if (Object.prototype.hasOwnProperty.call(data,id)) document.getElementById(id).value = data[id] || "";
+  fields.forEach(function(id) {
+    const el = document.getElementById(id);
+    if (el && data && Object.prototype.hasOwnProperty.call(data,id)) {
+      el.value = data[id] || "";
+    }
   });
-  document.getElementById("status").textContent = "✅ Informations chargées.";
+  inventoryData = Array.isArray(data && data.inventory) ? data.inventory : [];
+  renderInventoryAdmin();
+  statusBox.textContent = "✅ Informations chargées.";
   if (node) { node.remove(); node = null; }
 };
 
-window.__saveAdmin = function(data) {
-  document.getElementById("saveBtn").disabled = false;
+window.__verifyAdmin = function(data) {
   if (node) { node.remove(); node = null; }
-  document.getElementById("status").textContent =
-    data && data.ok ? "✅ Enregistré et confirmé. L’écran principal se mettra à jour sous 30 secondes."
-                    : "❌ " + ((data && data.error) || "Échec de l’enregistrement.");
-};
 
-jsonp({action:"get"}, "__loadAdmin", function(){
-  document.getElementById("status").textContent = "⚠️ Impossible de charger les données.";
-});
-
-document.getElementById("saveBtn").addEventListener("click", function() {
-  const secret = document.getElementById("secret").value.trim();
-  if (!secret) {
-    document.getElementById("status").textContent = "⚠️ Saisis le code secret.";
+  if (data && data._nonce === pendingNonce) {
+    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour.";
+    saveBtn.disabled = false;
+    pendingNonce = "";
     return;
   }
-  this.disabled = true;
-  document.getElementById("status").textContent = "Enregistrement…";
-  const params = {action:"set", secret};
-  fields.forEach(id => params[id] = document.getElementById(id).value);
-  jsonp(params, "__saveAdmin", function(){
-    document.getElementById("saveBtn").disabled = false;
-    document.getElementById("status").textContent = "❌ Impossible de joindre Apps Script.";
-  });
+
+  attempts++;
+  if (attempts < 8) {
+    setTimeout(function() {
+      jsonp("__verifyAdmin", verifyFailed);
+    }, 700);
+  } else {
+    verifyFailed();
+  }
+};
+
+function verifyFailed() {
+  saveBtn.disabled = false;
+  statusBox.textContent = "⚠️ Envoi effectué, mais la vérification automatique a échoué.";
+}
+
+jsonp("__loadAdmin", function() {
+  statusBox.textContent = "⚠️ Impossible de charger les données actuelles.";
+});
+
+form.addEventListener("submit", function() {
+  pendingNonce = Date.now().toString(36) + Math.random().toString(36).slice(2);
+  document.getElementById("inventory").value = JSON.stringify(inventoryData);
+  document.getElementById("_nonce").value = pendingNonce;
+  attempts = 0;
+  saveBtn.disabled = true;
+  statusBox.textContent = "Enregistrement…";
+});
+
+frame.addEventListener("load", function() {
+  if (!pendingNonce) return;
+  setTimeout(function() {
+    jsonp("__verifyAdmin", verifyFailed);
+  }, 700);
 });
 </script>
-</body></html>
+</body>
+</html>

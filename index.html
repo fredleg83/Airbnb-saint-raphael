@@ -188,6 +188,18 @@ h1 {
   .place-actions{justify-content:flex-start}
 }
 
+
+/* Inventaire */
+.inventory-search{width:100%;box-sizing:border-box;padding:15px 17px;border:1px solid #c9dce9;border-radius:14px;font-size:17px;margin:8px 0 16px;background:#fff}
+.inventory-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.inv-filter{border:1px solid #c7d9e7;background:#fff;color:#173b60;border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
+.inv-filter.active{background:#0b78d1;color:#fff;border-color:#0b78d1}
+.inventory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.inventory-item{background:#fff;border:1px solid #dbe8f1;border-radius:16px;padding:15px;box-shadow:0 5px 16px rgba(18,55,88,.07)}
+.inventory-item h3{margin:0 0 8px;color:#0b376b}
+.inventory-meta{font-size:14px;line-height:1.5;color:#526b80}
+.inventory-empty{padding:20px;background:#fff;border-radius:14px;text-align:center;color:#61778a}
+
 </style>
 </head>
 <body>
@@ -228,6 +240,18 @@ h1 {
       <div class="icon">🍴</div><h3>Restaurants</h3><p>Bonnes adresses du centre</p>
     </a>
 
+    <a class="tile" href="#cinema">
+      <div class="icon">🎬</div><h3>Cinéma Le Lido</h3><p>Films, horaires et réservation</p>
+    </a>
+
+    <a class="tile" href="#evenements">
+      <div class="icon">🎭</div><h3>Événements & spectacles</h3><p>Saint‑Raphaël et Fréjus</p>
+    </a>
+
+    <a class="tile" href="#inventaire">
+      <div class="icon">📦</div><h3>Inventaire</h3><p>Rechercher un objet dans l’appartement</p>
+    </a>
+
     <a class="tile" href="#pratique">
       <div class="icon">ⓘ</div><h3>Infos pratiques</h3><p>Règles, départ, poubelles…</p>
     </a>
@@ -264,6 +288,9 @@ h1 {
 
   <div class="quick">
     <a href="#restaurants">🍴 Restaurants</a>
+    <a href="#cinema">🎬 Cinéma</a>
+    <a href="#evenements">🎭 Événements</a>
+    <a href="#inventaire">📦 Inventaire</a>
     <a href="#commerces">🛍️ Commerces</a>
     <a href="#plages">🏖️ Plages</a>
     <a href="#activites">📷 À voir / À faire</a>
@@ -385,6 +412,83 @@ h1 {
   </div>
 </section>
 
+
+
+<section id="cinema" class="screen">
+  <div class="detail">
+    <h2>🎬 Cinéma Le Lido</h2>
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>Le Lido — Saint‑Raphaël</h3>
+        <p>90 avenue Victor Hugo, 83700 Saint‑Raphaël</p>
+        <p>Multiplexe de 7 salles climatisées, avec projection numérique et 3D.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/">🎞️ Site officiel</a>
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/FR/43/horaires-cinema-le-lido-saint-raphael.html">🕒 Horaires & séances</a>
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/FR/achat-place">🎟️ Réserver</a>
+        <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Cin%C3%A9ma%20Le%20Lido%2C%2090%20avenue%20Victor%20Hugo%2C%20Saint-Rapha%C3%ABl">📍 Itinéraire</a>
+      </div>
+    </div>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+
+
+<section id="evenements" class="screen">
+  <div class="detail">
+    <h2>🎭 Événements & spectacles</h2>
+    <p>Retrouvez les concerts, spectacles, festivals, expositions, marchés et animations à Saint‑Raphaël et Fréjus.</p>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>☀️ Agenda Saint‑Raphaël</h3>
+        <p>Programme officiel de l’Office de Tourisme : événements, spectacles, concerts et animations.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.saint-raphael.com/fr/animation/agenda/">Voir l’agenda</a>
+      </div>
+    </div>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>🏛️ Agenda Fréjus</h3>
+        <p>Agenda officiel de la ville de Fréjus : concerts, théâtre, expositions, événements sportifs et festivals.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.frejus.fr/agenda/">Voir l’agenda</a>
+      </div>
+    </div>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>🎟️ AggloScènes</h3>
+        <p>Programmation culturelle commune à Fréjus et Saint‑Raphaël, notamment au Théâtre Le Forum et dans les salles raphaëloises.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.aggloscenes.com/">Voir les spectacles</a>
+      </div>
+    </div>
+
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="inventaire" class="screen">
+  <div class="detail">
+    <h2>📦 Inventaire de l’appartement</h2>
+    <p>Vous cherchez quelque chose ? Tapez son nom ou son emplacement.</p>
+    <input id="inventorySearch" class="inventory-search" type="search" placeholder="🔎 Rechercher : verre, bouilloire, assiette…" autocomplete="off">
+    <div class="inventory-toolbar" id="inventoryFilters"></div>
+    <div class="inventory-grid" id="inventoryGrid"></div>
+    <div id="inventoryEmpty" class="inventory-empty" style="display:none">Aucun objet trouvé.</div>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
 
 <section id="commerces" class="screen">
   <div class="detail">
@@ -545,7 +649,7 @@ h1 {
 
 
 <script>
-/* ====== PARAMÈTRES DISTANTS — version JSONP compatible Safari/GitHub Pages ====== */
+/* ====== DONNÉES DISTANTES ====== */
 const REMOTE_CONFIG_URL = "https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec";
 
 const DEFAULT_CONFIG = {
@@ -555,90 +659,147 @@ const DEFAULT_CONFIG = {
   stayEnd: "",
   arrivalTime: "15:00",
   departureTime: "11:00",
-  customNotice: ""
+  customNotice: "",
+  inventory: []
 };
 
-function formatDateFR(value){
-  if(!value) return "";
+function formatDateFR(value) {
+  if (!value) return "";
   const d = new Date(value + "T12:00:00");
   return d.toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
 }
 
-function applyRemoteConfig(c){
-  const cfg = Object.assign({}, DEFAULT_CONFIG, c || {});
-  document.getElementById("welcomeMessage").textContent =
-    cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage;
+function applyRemoteConfig(data) {
+  const cfg = Object.assign({}, DEFAULT_CONFIG, data || {});
 
-  const guestLine = document.getElementById("guestLine");
-  guestLine.textContent = cfg.guestName ? "Bienvenue " + cfg.guestName + " !" : "";
-
-  const start = formatDateFR(cfg.stayStart);
-  const end = formatDateFR(cfg.stayEnd);
-  let dates = "";
-  if(start && end) dates = "Séjour du " + start + " au " + end;
-  else if(start) dates = "Arrivée le " + start;
-  else if(end) dates = "Départ le " + end;
-
-  document.getElementById("stayDates").textContent =
-    dates || "Bienvenue dans l’appartement.";
-
-  document.getElementById("arrivalInfo").textContent =
-    cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
-
-  document.getElementById("departureInfo").textContent =
-    cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
-
+  const welcome = document.getElementById("welcomeMessage");
+  const guest = document.getElementById("guestLine");
+  const dates = document.getElementById("stayDates");
+  const arrival = document.getElementById("arrivalInfo");
+  const departure = document.getElementById("departureInfo");
   const notice = document.getElementById("customNotice");
-  if(cfg.customNotice){
-    notice.style.display = "block";
-    notice.textContent = cfg.customNotice;
-  } else {
-    notice.style.display = "none";
-    notice.textContent = "";
+
+  if (welcome) welcome.textContent = cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage;
+  if (guest) guest.textContent = cfg.guestName ? "Bienvenue " + cfg.guestName + " !" : "";
+
+  const a = formatDateFR(cfg.stayStart);
+  const d = formatDateFR(cfg.stayEnd);
+  let dateText = "Bienvenue dans l’appartement.";
+  if (a && d) dateText = "Séjour du " + a + " au " + d;
+  else if (a) dateText = "Arrivée le " + a;
+  else if (d) dateText = "Départ le " + d;
+  if (dates) dates.textContent = dateText;
+
+  if (arrival) arrival.textContent = cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
+  if (departure) departure.textContent = cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
+
+  if (Array.isArray(cfg.inventory) && cfg.inventory.length) {
+    inventoryItems = cfg.inventory;
+    inventoryCategory = "Tous";
+    renderInventoryFilters();
+    renderInventory();
+  }
+
+  if (notice) {
+    if (cfg.customNotice) {
+      notice.style.display = "block";
+      notice.textContent = cfg.customNotice;
+    } else {
+      notice.style.display = "none";
+      notice.textContent = "";
+    }
   }
 }
 
-let remoteScript = null;
-let remoteTimer = null;
-
-window.__airbnbReceiveConfig = function(data){
+let remoteNode = null;
+window.__airbnbConfig = function(data) {
   applyRemoteConfig(data);
-  if(remoteTimer) clearTimeout(remoteTimer);
-  if(remoteScript) {
-    remoteScript.remove();
-    remoteScript = null;
+  if (remoteNode) {
+    remoteNode.remove();
+    remoteNode = null;
   }
 };
 
-function loadRemoteConfig(){
-  if(remoteScript) remoteScript.remove();
-
-  remoteScript = document.createElement("script");
+function loadRemoteConfig() {
+  if (remoteNode) remoteNode.remove();
+  remoteNode = document.createElement("script");
   const sep = REMOTE_CONFIG_URL.includes("?") ? "&" : "?";
-  remoteScript.src =
-    REMOTE_CONFIG_URL + sep +
-    "callback=__airbnbReceiveConfig&t=" + Date.now();
-
-  remoteScript.onerror = function(){
-    console.warn("Configuration distante momentanément indisponible.");
-    if(remoteScript) {
-      remoteScript.remove();
-      remoteScript = null;
-    }
-  };
-
-  document.head.appendChild(remoteScript);
-
-  remoteTimer = setTimeout(function(){
-    if(remoteScript) {
-      remoteScript.remove();
-      remoteScript = null;
-    }
-  }, 10000);
+  remoteNode.src = REMOTE_CONFIG_URL + sep + "callback=__airbnbConfig&t=" + Date.now();
+  document.head.appendChild(remoteNode);
 }
 
 loadRemoteConfig();
-setInterval(loadRemoteConfig, 30 * 1000);
+setInterval(loadRemoteConfig, 30000);
+</script>
+
+
+<script>
+/* ====== INVENTAIRE ======
+   Les données ci-dessous servent uniquement de base si aucun inventaire distant
+   n'a encore été enregistré depuis la page Admin.
+*/
+const INVENTORY_DEMO = [
+  {name:"Grandes assiettes blanches", qty:"≈ 11", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Assiettes grises", qty:"≈ 7", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Petites assiettes blanches", qty:"≈ 7", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Bols blancs", qty:"≈ 4", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Mugs", qty:"≈ 11", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Verres à pied", qty:"≈ 9", category:"Verres", location:"Placard cuisine"},
+  {name:"Bouilloire rouge", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Presse-agrumes manuel", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Pichet doseur", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Petite casserole inox", qty:"1", category:"Cuisine", location:"Cuisine"}
+];
+
+let inventoryItems = INVENTORY_DEMO.slice();
+let inventoryCategory = "Tous";
+
+function norm(s){
+  return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+}
+function renderInventoryFilters(){
+  const box=document.getElementById("inventoryFilters");
+  if(!box) return;
+  const cats=["Tous", ...Array.from(new Set(inventoryItems.map(x=>x.category))).sort()];
+  box.innerHTML="";
+  cats.forEach(cat=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.className="inv-filter"+(cat===inventoryCategory?" active":"");
+    b.textContent=cat;
+    b.onclick=()=>{inventoryCategory=cat;renderInventoryFilters();renderInventory();};
+    box.appendChild(b);
+  });
+}
+function renderInventory(){
+  const grid=document.getElementById("inventoryGrid");
+  const empty=document.getElementById("inventoryEmpty");
+  const search=document.getElementById("inventorySearch");
+  if(!grid||!empty) return;
+  const q=norm(search?search.value:"");
+  const list=inventoryItems.filter(x=>{
+    const catOk=inventoryCategory==="Tous"||x.category===inventoryCategory;
+    const hay=norm([x.name,x.category,x.location,x.qty].join(" "));
+    return catOk && (!q||hay.includes(q));
+  });
+  grid.innerHTML="";
+  list.forEach(x=>{
+    const d=document.createElement("div");
+    d.className="inventory-item";
+    d.innerHTML="<h3>"+escapeInv(x.name)+"</h3><div class='inventory-meta'><b>Quantité :</b> "+escapeInv(x.qty)+"<br><b>Catégorie :</b> "+escapeInv(x.category)+"<br><b>Emplacement :</b> "+escapeInv(x.location)+"</div>";
+    grid.appendChild(d);
+  });
+  empty.style.display=list.length?"none":"block";
+}
+function escapeInv(s){
+  return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  const s=document.getElementById("inventorySearch");
+  if(s) s.addEventListener("input",renderInventory);
+  renderInventoryFilters();
+  renderInventory();
+});
 </script>
 
 </body>
