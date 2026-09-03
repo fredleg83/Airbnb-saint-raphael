@@ -7,141 +7,89 @@
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#eef6fb;color:#173b60}
 .wrap{max-width:760px;margin:auto;padding:22px}
-.card{background:white;border-radius:22px;padding:22px;box-shadow:0 12px 38px rgba(18,55,88,.15)}
+.card{background:#fff;border-radius:22px;padding:22px;box-shadow:0 12px 38px rgba(18,55,88,.15)}
 h1{margin-top:0;color:#0b376b;font-size:30px}
 label{display:block;font-weight:800;margin:16px 0 7px}
 input,textarea{box-sizing:border-box;width:100%;font:inherit;padding:13px 14px;border:1px solid #c8d9e7;border-radius:12px;background:#fbfdff}
 textarea{min-height:100px;resize:vertical}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:white;padding:15px;font-size:18px;font-weight:800}
+button{width:100%;margin-top:22px;border:0;border-radius:14px;background:#0b78d1;color:#fff;padding:15px;font-size:18px;font-weight:800}
 button:disabled{opacity:.55}
-.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa;line-height:1.4}
+.status{margin-top:14px;padding:12px;border-radius:12px;background:#f3f7fa;line-height:1.45}
 .note{font-size:14px;color:#5e7489;line-height:1.45}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>🏠 Écran Airbnb — Administration</h1>
-    <p>Modifie ici les informations affichées sur l’iMac.</p>
-
-    <form id="adminForm" method="POST" action="https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec" target="saveFrame">
-      <label for="secret">Code secret</label>
-      <input id="secret" name="secret" type="password" placeholder="Votre code secret" required>
-
-      <label for="guestName">Nom du ou des voyageurs</label>
-      <input id="guestName" name="guestName" placeholder="Ex. Sophie et Marc">
-
-      <label for="welcomeMessage">Message de bienvenue</label>
-      <textarea id="welcomeMessage" name="welcomeMessage">Profitez pleinement de votre séjour ! ♡</textarea>
-
-      <div class="grid">
-        <div>
-          <label for="stayStart">Date d’arrivée</label>
-          <input id="stayStart" name="stayStart" type="date">
-        </div>
-        <div>
-          <label for="stayEnd">Date de départ</label>
-          <input id="stayEnd" name="stayEnd" type="date">
-        </div>
-      </div>
-
-      <div class="grid">
-        <div>
-          <label for="arrivalTime">Heure d’arrivée</label>
-          <input id="arrivalTime" name="arrivalTime" type="time" value="15:00">
-        </div>
-        <div>
-          <label for="departureTime">Heure de départ</label>
-          <input id="departureTime" name="departureTime" type="time" value="11:00">
-        </div>
-      </div>
-
-      <label for="customNotice">Message exceptionnel</label>
-      <textarea id="customNotice" name="customNotice" placeholder="Ex. Le marché nocturne a lieu ce soir sur le front de mer."></textarea>
-
-      <input type="hidden" id="_nonce" name="_nonce" value="">
-      <button id="saveBtn" type="submit">Enregistrer sur l’écran</button>
-    </form>
-
-    <iframe name="saveFrame" id="saveFrame" style="display:none"></iframe>
-    <div id="status" class="status">Chargement des informations…</div>
-    <p class="note">L’écran principal vérifie les nouvelles informations toutes les 30 secondes.</p>
-  </div>
+<div class="wrap"><div class="card">
+<h1>🏠 Écran Airbnb — Administration</h1>
+<label>Code secret</label><input id="secret" type="password" placeholder="Votre code secret">
+<label>Nom du ou des voyageurs</label><input id="guestName">
+<label>Message de bienvenue</label><textarea id="welcomeMessage">Profitez pleinement de votre séjour ! ♡</textarea>
+<div class="grid">
+<div><label>Date d’arrivée</label><input id="stayStart" type="date"></div>
+<div><label>Date de départ</label><input id="stayEnd" type="date"></div>
 </div>
+<div class="grid">
+<div><label>Heure d’arrivée</label><input id="arrivalTime" type="time" value="15:00"></div>
+<div><label>Heure de départ</label><input id="departureTime" type="time" value="11:00"></div>
+</div>
+<label>Message exceptionnel</label><textarea id="customNotice"></textarea>
+<button id="saveBtn">Enregistrer sur l’écran</button>
+<div id="status" class="status">Chargement…</div>
+<p class="note">L’écran principal vérifie les nouvelles informations toutes les 30 secondes.</p>
+</div></div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxhRP1wgzlB8Rw0aaHiHAJW--nHHx6EUbI1oGmugSIewVl5q42-APeA3cMg9sUVw2rn/exec";
-const ids = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
-const form = document.getElementById("adminForm");
-const frame = document.getElementById("saveFrame");
-const statusBox = document.getElementById("status");
-const saveBtn = document.getElementById("saveBtn");
-let pendingNonce = "";
-let verifyAttempts = 0;
-let scriptNode = null;
+const fields = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
+let node = null;
 
-function fill(c){
-  if(!c) return;
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if(el && Object.prototype.hasOwnProperty.call(c,id)) el.value = c[id] || "";
+function jsonp(params, cb, onError) {
+  if (node) node.remove();
+  const q = new URLSearchParams(params);
+  q.set("callback", cb);
+  q.set("t", Date.now());
+  node = document.createElement("script");
+  node.src = API_URL + "?" + q.toString();
+  node.onerror = onError || function(){};
+  document.head.appendChild(node);
+}
+
+window.__loadAdmin = function(data) {
+  fields.forEach(id => {
+    if (Object.prototype.hasOwnProperty.call(data,id)) document.getElementById(id).value = data[id] || "";
   });
-}
-
-function jsonp(callbackName, onError){
-  if(scriptNode) scriptNode.remove();
-  scriptNode = document.createElement("script");
-  const sep = API_URL.includes("?") ? "&" : "?";
-  scriptNode.src = API_URL + sep + "callback=" + callbackName + "&t=" + Date.now();
-  scriptNode.onerror = onError || function(){};
-  document.head.appendChild(scriptNode);
-}
-
-window.__adminLoad = function(data){
-  fill(data);
-  statusBox.textContent = "✅ Informations chargées.";
-  if(scriptNode) { scriptNode.remove(); scriptNode = null; }
+  document.getElementById("status").textContent = "✅ Informations chargées.";
+  if (node) { node.remove(); node = null; }
 };
 
-window.__adminVerify = function(data){
-  if(scriptNode) { scriptNode.remove(); scriptNode = null; }
-  if(data && data._nonce === pendingNonce){
-    saveBtn.disabled = false;
-    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour sous 30 secondes.";
-    pendingNonce = "";
+window.__saveAdmin = function(data) {
+  document.getElementById("saveBtn").disabled = false;
+  if (node) { node.remove(); node = null; }
+  document.getElementById("status").textContent =
+    data && data.ok ? "✅ Enregistré et confirmé. L’écran principal se mettra à jour sous 30 secondes."
+                    : "❌ " + ((data && data.error) || "Échec de l’enregistrement.");
+};
+
+jsonp({action:"get"}, "__loadAdmin", function(){
+  document.getElementById("status").textContent = "⚠️ Impossible de charger les données.";
+});
+
+document.getElementById("saveBtn").addEventListener("click", function() {
+  const secret = document.getElementById("secret").value.trim();
+  if (!secret) {
+    document.getElementById("status").textContent = "⚠️ Saisis le code secret.";
     return;
   }
-  verifyAttempts++;
-  if(verifyAttempts < 6){
-    setTimeout(() => jsonp("__adminVerify", verifyFailed), 800);
-  } else {
-    verifyFailed();
-  }
-};
-
-function verifyFailed(){
-  saveBtn.disabled = false;
-  statusBox.textContent = "⚠️ Envoi effectué mais vérification impossible. Ouvre l’URL Apps Script /exec pour contrôler les données.";
-}
-
-jsonp("__adminLoad", function(){
-  statusBox.textContent = "⚠️ Impossible de charger les données actuelles, mais l’enregistrement reste disponible.";
-});
-
-form.addEventListener("submit", function(){
-  pendingNonce = Date.now().toString(36) + Math.random().toString(36).slice(2);
-  document.getElementById("_nonce").value = pendingNonce;
-  verifyAttempts = 0;
-  saveBtn.disabled = true;
-  statusBox.textContent = "Enregistrement…";
-});
-
-frame.addEventListener("load", function(){
-  if(!pendingNonce) return;
-  setTimeout(() => jsonp("__adminVerify", verifyFailed), 600);
+  this.disabled = true;
+  document.getElementById("status").textContent = "Enregistrement…";
+  const params = {action:"set", secret};
+  fields.forEach(id => params[id] = document.getElementById(id).value);
+  jsonp(params, "__saveAdmin", function(){
+    document.getElementById("saveBtn").disabled = false;
+    document.getElementById("status").textContent = "❌ Impossible de joindre Apps Script.";
+  });
 });
 </script>
-</body>
-</html>
+</body></html>
