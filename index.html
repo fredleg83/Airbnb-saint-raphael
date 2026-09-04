@@ -202,23 +202,38 @@ h1 {
 
 </style>
 
-
-
-
-<style id="single-final-background">
-body {
-  background:
-    linear-gradient(rgba(0,28,55,.04),rgba(0,28,55,.10)),
-    url("https://upload.wikimedia.org/wikipedia/commons/6/6f/Vue_du_vieux_port_de_Saint-Rapha%C3%ABl_depuis_la_grande_roue.jpg") center top / cover fixed no-repeat !important;
-  background-color:#dcecf4 !important;
+<style id="safe-port-background">
+html, body {
+  min-height: 100%;
 }
-body::before { display:none !important; }
-#accueil { background:transparent !important; }
-@media(max-width:1000px){
-  body {
-    background-attachment:scroll !important;
-    background-size:cover !important;
-    background-position:center top !important;
+body {
+  position: relative;
+  background: #dfeaf0 !important;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/6/6f/Vue_du_vieux_port_de_Saint-Rapha%C3%ABl_depuis_la_grande_roue.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(8,45,70,.10);
+  pointer-events: none;
+}
+#accueil {
+  background: transparent !important;
+}
+@media (max-width: 900px) {
+  body::before {
+    background-position: center top;
   }
 }
 </style>
@@ -226,68 +241,100 @@ body::before { display:none !important; }
 </head>
 <body>
 
+<section id="accueil" class="screen home">
+  <header>
+    <div class="title-wrap">
+      <h1>Bienvenue à<br>Saint‑Raphaël ☀️</h1>
+      <div class="subtitle" id="welcomeMessage">Profitez pleinement de votre séjour ! ♡</div>
+      <div id="guestLine" style="margin-top:10px;font-size:24px;font-weight:800;color:#0b376b;"></div>
+    </div>
+    <div class="weather" id="weatherCard">
+      <div class="sun" id="weatherIcon">☀️</div>
+      <div class="temp" id="weatherTemp">--°</div>
+      <div><strong>Saint‑Raphaël</strong><br><span id="weatherDesc">Chargement…</span></div>
+    </div>
+  </header>
 
-<section id="accueil" class="screen clean-home">
-  <div class="clean-shell">
-    <aside class="left-stack">
-      <a class="glass weather-card" href="#meteo">
-        <div class="weather-line"><span id="weatherIcon">☀️</span><strong id="weatherTemp">--°</strong></div>
-        <div class="weather-city">Saint‑Raphaël</div>
-        <div id="weatherDesc" class="weather-desc">Chargement…</div>
-      </a>
+  <div class="tiles">
+    <a class="tile wifi-tile" href="#wifi">
+      <div>
+        <div class="icon">📶</div>
+        <h3>Wi‑Fi</h3>
+        <p><strong>Réseau :</strong> Freebox<br><strong>Mot de passe :</strong> fredwifi</p>
+      </div>
+      <img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi">
+    </a>
 
-      <a class="glass wifi-card" href="#wifi">
-        <div>
-          <div class="card-title">📶 Wi‑Fi</div>
-          <div><b>Réseau :</b> Freebox</div>
-          <div><b>Mot de passe :</b> fredwifi</div>
-        </div>
-        <img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi">
-      </a>
+    <a class="tile" href="#plages">
+      <div class="icon">🏖️</div><h3>Plages</h3><p>À environ 300 m à pied</p>
+    </a>
 
-      <a class="glass help-card" href="#urgences">
-        <div class="card-title">☎ Besoin d’aide ?</div>
-        <div>Numéros utiles et urgences</div>
-      </a>
-    </aside>
+    <a class="tile" href="#parking">
+      <div class="icon">🅿️</div><h3>Stationnement</h3><p>Solutions à proximité</p>
+    </a>
 
-    <main class="welcome-zone">
-      <div class="mini-brand">AIRBNB<br><span>SAINT‑RAPHAËL</span></div>
-      <h1>Bienvenue</h1>
-      <div id="guestLine" class="guest-name"></div>
-      <div class="sun-sep">☀️</div>
-      <div id="welcomeMessage" class="welcome-text">Profitez pleinement de votre séjour ! ♡</div>
-    </main>
+    <a class="tile" href="#restaurants">
+      <div class="icon">🍴</div><h3>Restaurants</h3><p>Bonnes adresses du centre</p>
+    </a>
 
-    <aside class="glass useful-card">
-      <div class="card-title">ⓘ Informations utiles</div>
-      <div id="stayDates" class="useful-row">Bienvenue dans l’appartement.</div>
-      <div id="arrivalInfo" class="useful-row">🕒 Arrivée à partir de 15:00</div>
-      <div id="departureInfo" class="useful-row">🚪 Départ avant 11:00</div>
-      <div class="useful-row">📶 Wi‑Fi : QR code à gauche</div>
-      <div class="useful-row">🅿️ Stationnement : voir rubrique</div>
-      <div id="customNotice" class="notice-home" style="display:none"></div>
-      <div class="goodstay">Merci et bon séjour ☀️</div>
-    </aside>
+    <a class="tile" href="#cinema">
+      <div class="icon">🎬</div><h3>Cinéma Le Lido</h3><p>Films, horaires et réservation</p>
+    </a>
 
-    <nav class="nav-grid">
-      <a class="nav-card" href="#plages"><span>🏖️</span><b>Plages</b><small>À environ 300 m à pied</small></a>
-      <a class="nav-card" href="#restaurants"><span>🍴</span><b>Restaurants</b><small>Bonnes adresses</small></a>
-      <a class="nav-card" href="#cinema"><span>🎬</span><b>Cinéma</b><small>Le Lido</small></a>
-      <a class="nav-card" href="#evenements"><span>🎭</span><b>Événements</b><small>Saint‑Raphaël & Fréjus</small></a>
-      <a class="nav-card" href="#inventaire"><span>📦</span><b>Inventaire</b><small>Retrouver un objet</small></a>
+    <a class="tile" href="#evenements">
+      <div class="icon">🎭</div><h3>Événements & spectacles</h3><p>Saint‑Raphaël et Fréjus</p>
+    </a>
 
-      <a class="nav-card" href="#parking"><span>🅿️</span><b>Stationnement</b><small>Solutions à proximité</small></a>
-      <a class="nav-card" href="#commerces"><span>🛍️</span><b>Commerces</b><small>Courses et pharmacie</small></a>
-      <a class="nav-card" href="#activites"><span>🥾</span><b>Activités</b><small>À voir / à faire</small></a>
-      <a class="nav-card" href="#pratique"><span>ⓘ</span><b>Infos pratiques</b><small>Règles et informations</small></a>
-      <a class="nav-card" href="#urgences"><span>✚</span><b>Urgences</b><small>Numéros importants</small></a>
-    </nav>
+    <a class="tile" href="#inventaire">
+      <div class="icon">📦</div><h3>Inventaire</h3><p>Rechercher un objet dans l’appartement</p>
+    </a>
 
-    <div class="footer-pill">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
+    <a class="tile" href="#pratique">
+      <div class="icon">ⓘ</div><h3>Infos pratiques</h3><p>Règles, départ, poubelles…</p>
+    </a>
+  </div>
+
+  <div class="main">
+
+    <div class="panel" id="stayCard">
+      <h2>🧳 Votre séjour</h2>
+      <p id="stayDates">Bienvenue !</p>
+      <p id="arrivalInfo"></p>
+      <p id="departureInfo"></p>
+      <p id="customNotice" class="note" style="display:none"></p>
+    </div>
+
+    <div class="panel">
+      <h2>🏠 Dans l’appartement</h2>
+      <ul>
+        <li>Départ avant 11 h</li>
+        <li>Maximum 5 voyageurs</li>
+        <li>Respect du calme après 22 h</li>
+        <li>Climatisation avec fenêtres fermées</li>
+        <li>Poubelles dans les conteneurs du parking en bas de l’immeuble</li>
+      </ul>
+    </div>
+
+    <div class="panel hero"><div class="city">Saint‑Raphaël<br><small>Côte d’Azur</small></div></div>
+
+    <div class="panel">
+      <h2>📞 Urgences</h2>
+      <p><strong>112</strong> Europe<br><strong>15</strong> SAMU<br><strong>17</strong> Police<br><strong>18</strong> Pompiers</p>
+    </div>
+  </div>
+
+  <div class="quick">
+    <a href="#restaurants">🍴 Restaurants</a>
+    <a href="#cinema">🎬 Cinéma</a>
+    <a href="#evenements">🎭 Événements</a>
+    <a href="#inventaire">📦 Inventaire</a>
+    <a href="#commerces">🛍️ Commerces</a>
+    <a href="#plages">🏖️ Plages</a>
+    <a href="#activites">📷 À voir / À faire</a>
+    <a href="#urgences">✚ Urgences</a>
+    <a href="#meteo">📅 Météo</a>
   </div>
 </section>
-
 
 <section id="wifi" class="screen">
   <div class="detail">
