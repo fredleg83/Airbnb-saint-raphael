@@ -202,72 +202,95 @@ h1 {
 
 </style>
 
-<style id="clean-final-style">
-:root{--deep:#082d59;--glass:rgba(255,255,255,.88);--glass2:rgba(255,255,255,.95)}
-body{
+<style id="dashboard-reference-v1">
+body {
   background:
-    linear-gradient(rgba(0,28,55,.04),rgba(0,28,55,.10)),
-    url("https://upload.wikimedia.org/wikipedia/commons/7/70/P1000359_Saint_Raphael_et_son_port_de_plaisance.JPG") center 38% / 100% auto no-repeat fixed !important;
-  background-color:#dcecf4!important;
+    linear-gradient(rgba(3,38,69,.08), rgba(3,38,69,.12)),
+    url("https://static.verychic.com/images/565086/fr/desktop/Saint_Raphael_vue_aerienne.jpg") center 30% / cover fixed no-repeat !important;
+  background-color:#b9d9e7 !important;
 }
-body::before{display:none!important}
-.clean-home{min-height:100vh;padding:18px;background:transparent!important;color:#fff}
-.clean-shell{
-  width:min(1500px,100%);
-  margin:auto;
-  min-height:calc(100vh - 36px);
-  display:grid;
-  grid-template-columns:255px minmax(420px,1fr) 300px;
-  grid-template-rows:auto 1fr auto;
-  gap:18px 20px;
-  align-items:start;
+body::before { display:none!important; }
+.dashboard-home { min-height:100vh; padding:18px; background:transparent!important; color:#fff; }
+.dash-wrap {
+  width:min(1500px,100%); min-height:calc(100vh - 36px); margin:auto;
+  display:grid; grid-template-columns:285px minmax(470px,1fr) 310px;
+  grid-template-rows:auto 1fr auto; gap:16px 22px; align-items:start;
 }
-.glass{
-  background:var(--glass);
-  color:var(--deep);
-  border:1px solid rgba(255,255,255,.75);
-  border-radius:24px;
-  box-shadow:0 14px 36px rgba(3,25,48,.20);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  text-decoration:none;
+.glass {
+  background:rgba(255,255,255,.88); color:#082d59; text-decoration:none;
+  border:1px solid rgba(255,255,255,.8); border-radius:25px;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 16px 36px rgba(4,30,55,.20);
 }
-.left-stack{display:grid;gap:12px}
-.weather-card,.wifi-card,.help-card,.useful-card{padding:17px}
-.weather-line{display:flex;align-items:center;gap:12px}
-.weather-line span{font-size:40px}.weather-line strong{font-size:42px}.weather-city{font-weight:900;font-size:18px;margin-top:5px}.weather-desc{font-size:14px}
-.wifi-card{display:grid;grid-template-columns:1fr 88px;align-items:center;gap:10px}
-.wifi-card .qr-small{width:84px!important;height:84px!important;padding:5px;border-radius:12px}
-.card-title{font-size:21px;font-weight:900;margin-bottom:10px}
-.help-card div:last-child{font-size:14px}
-.welcome-zone{text-align:center;padding-top:12px;text-shadow:0 3px 15px rgba(0,25,55,.58)}
-.mini-brand{font-size:24px;letter-spacing:.24em;line-height:1.1}.mini-brand span{font-size:11px;letter-spacing:.27em}
-.welcome-zone h1{
-  margin:18px 0 4px;
-  font-family:"Snell Roundhand","Segoe Script","Brush Script MT",cursive;
-  font-size:clamp(78px,8vw,128px);
-  line-height:.82;
-  font-weight:500;color:white;
+.left-rail { display:grid; gap:12px; }
+.weather-box,.wifi-box,.help-box,.info-box { padding:18px; }
+.weather-row { display:flex; align-items:center; gap:14px; }
+.big-weather { font-size:48px; }
+.big-temp { font-size:46px; font-weight:900; line-height:1; }
+.weather-city { font-size:18px; font-weight:900; margin-top:7px; }
+.weather-desc { font-size:14px; }
+.wifi-box { display:grid; grid-template-columns:1fr 94px; gap:10px; align-items:center; }
+.wifi-box .qr-small { width:90px!important; height:90px!important; border-radius:12px; padding:5px; background:#fff; }
+.rail-title { font-size:22px; font-weight:900; margin-bottom:10px; }
+.small-copy,.wifi-copy { font-size:15px; line-height:1.45; }
+
+.hero-zone { text-align:center; padding-top:8px; text-shadow:0 3px 15px rgba(0,35,64,.58); }
+.brand { font-size:20px; line-height:1.15; letter-spacing:.12em; }
+.brand span { display:block; font-size:27px; letter-spacing:.28em; margin-top:3px; }
+.brand small { display:block; font-size:11px; letter-spacing:.3em; }
+.hero-zone h1 {
+  margin:14px 0 6px; color:white; font-size:clamp(54px,5.6vw,84px);
+  line-height:.95; font-weight:850; letter-spacing:-.02em; text-shadow:0 4px 18px rgba(0,31,61,.55);
 }
-.guest-name{font-size:clamp(28px,3vw,44px);font-weight:900;color:white!important;margin-top:16px}
-.sun-sep{font-size:22px;margin:6px 0}
-.welcome-text{font-size:clamp(18px,1.6vw,26px);font-weight:700}
-.useful-card{font-size:14px}.useful-row{padding:7px 0;border-bottom:1px solid rgba(8,45,89,.09)}.goodstay{text-align:center;font-weight:800;margin-top:14px}.notice-home{margin-top:10px;padding:10px;border-radius:10px;background:#fff2bd;color:#725800;font-weight:800}
-.nav-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-self:end}
-.nav-card{
-  min-height:120px;background:var(--glass2);color:var(--deep);text-decoration:none;
-  border-radius:20px;border:1px solid rgba(255,255,255,.78);padding:14px;
-  box-shadow:0 10px 26px rgba(3,25,48,.16);display:flex;flex-direction:column;justify-content:center
+.hero-sun { font-size:46px; margin:8px 0 7px; }
+.hero-message { font-size:clamp(18px,1.6vw,25px); font-weight:750; }
+.hero-guest { margin-top:9px; font-size:clamp(22px,2.2vw,34px); font-weight:900; color:white!important; }
+
+.info-box { font-size:15px; }
+.info-line { padding:7px 0; border-bottom:1px solid rgba(8,45,89,.08); }
+.dash-notice { margin-top:10px; padding:10px; border-radius:12px; background:#fff1b5; color:#6f5500; font-weight:800; }
+.thanks { text-align:center; font-weight:900; margin-top:14px; }
+
+.photo-grid {
+  grid-column:1/-1; align-self:end; display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px;
 }
-.nav-card span{font-size:30px;margin-bottom:6px}.nav-card b{font-size:18px}.nav-card small{font-size:13px;opacity:.72;margin-top:4px;line-height:1.25}
-.footer-pill{grid-column:1/-1;width:max-content;max-width:100%;margin:auto;padding:9px 20px;border-radius:999px;background:rgba(4,43,81,.92);font-size:13px;text-align:center}
-@media(max-width:1000px){
-  body{background-attachment:scroll!important;background-size:auto 100vh!important;background-position:center center!important}
-  .clean-shell{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto}
-  .welcome-zone{grid-column:1/-1;grid-row:1}.left-stack{grid-column:1;grid-row:2}.useful-card{grid-column:2;grid-row:2}.nav-grid{grid-column:1/-1;grid-template-columns:repeat(2,1fr)}.footer-pill{grid-column:1/-1}
+.photo-card {
+  overflow:hidden; background:rgba(255,255,255,.91); color:#082d59; text-decoration:none;
+  border:1px solid rgba(255,255,255,.85); border-radius:20px;
+  box-shadow:0 12px 30px rgba(4,30,55,.18); backdrop-filter:blur(10px);
+  transition:.18s ease;
 }
-@media(max-width:650px){
-  .clean-home{padding:12px}.clean-shell{display:block}.welcome-zone{padding:10px 4px 20px}.welcome-zone h1{font-size:72px}.left-stack,.useful-card{margin-bottom:12px}.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.nav-card{min-height:110px}.footer-pill{width:100%;border-radius:14px;margin-top:12px}
+.photo-card:hover,.photo-card:focus { transform:translateY(-3px); }
+.photo-card img { width:100%; height:96px; display:block; object-fit:cover; }
+.photo-card div { padding:11px 14px 14px; min-height:82px; }
+.photo-card b { display:block; font-size:19px; }
+.photo-card span { display:block; font-size:13px; line-height:1.3; opacity:.78; margin-top:4px; }
+
+.dash-footer {
+  grid-column:1/-1; width:max-content; max-width:100%; margin:auto;
+  padding:9px 22px; border-radius:999px; background:rgba(4,43,81,.92);
+  color:#fff; font-size:13px; text-align:center;
+}
+
+@media(max-width:1050px) {
+  body { background-attachment:scroll!important; background-position:center top!important; }
+  .dash-wrap { grid-template-columns:1fr 1fr; grid-template-rows:auto auto auto auto; }
+  .hero-zone { grid-column:1/-1; grid-row:1; }
+  .left-rail { grid-column:1; grid-row:2; }
+  .info-box { grid-column:2; grid-row:2; }
+  .photo-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:650px) {
+  .dashboard-home { padding:10px; }
+  .dash-wrap { display:block; }
+  .hero-zone { padding:10px 4px 20px; }
+  .hero-zone h1 { font-size:54px; }
+  .left-rail,.info-box { margin-bottom:12px; }
+  .photo-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .photo-card img { height:80px; }
+  .photo-card div { min-height:76px; padding:9px 10px 11px; }
+  .dash-footer { width:100%; border-radius:14px; margin-top:12px; }
 }
 </style>
 
@@ -275,66 +298,73 @@ body::before{display:none!important}
 <body>
 
 
-<section id="accueil" class="screen clean-home">
-  <div class="clean-shell">
-    <aside class="left-stack">
-      <a class="glass weather-card" href="#meteo">
-        <div class="weather-line"><span id="weatherIcon">☀️</span><strong id="weatherTemp">--°</strong></div>
-        <div class="weather-city">Saint‑Raphaël</div>
-        <div id="weatherDesc" class="weather-desc">Chargement…</div>
+<section id="accueil" class="screen dashboard-home">
+  <div class="dash-wrap">
+
+    <aside class="left-rail">
+      <a href="#meteo" class="glass weather-box">
+        <div class="weather-row">
+          <span id="weatherIcon" class="big-weather">☀️</span>
+          <div>
+            <div id="weatherTemp" class="big-temp">--°</div>
+            <div class="weather-city">Saint‑Raphaël</div>
+            <div id="weatherDesc" class="weather-desc">Chargement…</div>
+          </div>
+        </div>
       </a>
 
-      <a class="glass wifi-card" href="#wifi">
-        <div>
-          <div class="card-title">📶 Wi‑Fi</div>
+      <a href="#wifi" class="glass wifi-box">
+        <div class="wifi-copy">
+          <div class="rail-title">📶 Wi‑Fi</div>
           <div><b>Réseau :</b> Freebox</div>
           <div><b>Mot de passe :</b> fredwifi</div>
         </div>
         <img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi">
       </a>
 
-      <a class="glass help-card" href="#urgences">
-        <div class="card-title">☎ Besoin d’aide ?</div>
-        <div>Numéros utiles et urgences</div>
+      <a href="#urgences" class="glass help-box">
+        <div class="rail-title">☎ Besoin d’aide ?</div>
+        <div class="small-copy">Numéros utiles et urgences</div>
       </a>
     </aside>
 
-    <main class="welcome-zone">
-      <div class="mini-brand">AIRBNB<br><span>SAINT‑RAPHAËL</span></div>
-      <h1>Bienvenue</h1>
-      <div id="guestLine" class="guest-name"></div>
-      <div class="sun-sep">☀️</div>
-      <div id="welcomeMessage" class="welcome-text">Profitez pleinement de votre séjour ! ♡</div>
+    <main class="hero-zone">
+      <div class="brand">☀︎ 〰︎ 🌴<br><span>AIRBNB</span><small>SAINT‑RAPHAËL</small></div>
+      <h1>Bienvenue à<br>Saint‑Raphaël</h1>
+      <div class="hero-sun">☀️</div>
+      <div id="welcomeMessage" class="hero-message">Profitez pleinement de votre séjour ! ♡</div>
+      <div id="guestLine" class="hero-guest"></div>
     </main>
 
-    <aside class="glass useful-card">
-      <div class="card-title">ⓘ Informations utiles</div>
-      <div id="stayDates" class="useful-row">Bienvenue dans l’appartement.</div>
-      <div id="arrivalInfo" class="useful-row">🕒 Arrivée à partir de 15:00</div>
-      <div id="departureInfo" class="useful-row">🚪 Départ avant 11:00</div>
-      <div class="useful-row">📶 Wi‑Fi : QR code à gauche</div>
-      <div class="useful-row">🅿️ Stationnement : voir rubrique</div>
-      <div id="customNotice" class="notice-home" style="display:none"></div>
-      <div class="goodstay">Merci et bon séjour ☀️</div>
+    <aside class="glass info-box">
+      <div class="rail-title">ⓘ Informations utiles</div>
+      <div id="stayDates" class="info-line">Bienvenue dans l’appartement.</div>
+      <div id="arrivalInfo" class="info-line">🕒 Arrivée à partir de 15:00</div>
+      <div id="departureInfo" class="info-line">🚪 Départ avant 11:00</div>
+      <div class="info-line">🐾 Animaux : autorisés sous conditions</div>
+      <div class="info-line">🅿️ Stationnement : voir rubrique</div>
+      <div class="info-line">📦 Inventaire : tout est là !</div>
+      <div id="customNotice" class="dash-notice" style="display:none"></div>
+      <div class="thanks">Merci et bon séjour ! ☀️</div>
     </aside>
 
-    <nav class="nav-grid">
-      <a class="nav-card" href="#plages"><span>🏖️</span><b>Plages</b><small>À environ 300 m à pied</small></a>
-      <a class="nav-card" href="#restaurants"><span>🍴</span><b>Restaurants</b><small>Bonnes adresses</small></a>
-      <a class="nav-card" href="#cinema"><span>🎬</span><b>Cinéma</b><small>Le Lido</small></a>
-      <a class="nav-card" href="#evenements"><span>🎭</span><b>Événements</b><small>Saint‑Raphaël & Fréjus</small></a>
-      <a class="nav-card" href="#inventaire"><span>📦</span><b>Inventaire</b><small>Retrouver un objet</small></a>
+    <nav class="photo-grid">
+      <a class="photo-card" href="#plages"><img src="plages.jpg"><div><b>Plages</b><span>Les plus belles plages et criques</span></div></a>
+      <a class="photo-card" href="#restaurants"><img src="restaurants.jpg"><div><b>Restaurants</b><span>Nos bonnes adresses à découvrir</span></div></a>
+      <a class="photo-card" href="#cinema"><img src="cinema.jpg"><div><b>Cinéma</b><span>Programmation et horaires</span></div></a>
+      <a class="photo-card" href="#evenements"><img src="evenements.jpg"><div><b>Événements</b><span>Agenda Saint‑Raphaël & Fréjus</span></div></a>
+      <a class="photo-card" href="#inventaire"><img src="inventaire.jpg"><div><b>Inventaire</b><span>Tout ce que vous devez savoir</span></div></a>
 
-      <a class="nav-card" href="#parking"><span>🅿️</span><b>Stationnement</b><small>Solutions à proximité</small></a>
-      <a class="nav-card" href="#commerces"><span>🛍️</span><b>Commerces</b><small>Courses et pharmacie</small></a>
-      <a class="nav-card" href="#activites"><span>🥾</span><b>Activités</b><small>À voir / à faire</small></a>
-      <a class="nav-card" href="#pratique"><span>ⓘ</span><b>Infos pratiques</b><small>Règles et informations</small></a>
-      <a class="nav-card" href="#urgences"><span>✚</span><b>Urgences</b><small>Numéros importants</small></a>
+      <a class="photo-card" href="#parking"><img src="parking.jpg"><div><b>Stationnement</b><span>Où se garer facilement</span></div></a>
+      <a class="photo-card" href="#pratique"><img src="transports.jpg"><div><b>Transports</b><span>Train, bus et déplacements</span></div></a>
+      <a class="photo-card" href="#commerces"><img src="commerces.jpg"><div><b>Commerces</b><span>Supermarchés et commerces utiles</span></div></a>
+      <a class="photo-card" href="#activites"><img src="activites.jpg"><div><b>Activités</b><span>Loisirs autour de Saint‑Raphaël</span></div></a>
+      <a class="photo-card" href="#pratique"><img src="pratique.jpg"><div><b>Infos pratiques</b><span>Numéros utiles et informations</span></div></a>
     </nav>
 
-    <div class="footer-pill">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
+    <div class="dash-footer">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
   </div>
-<div id="photo-credit" style="text-align:center;font-size:10px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.85);margin:6px 0 0;">Photo : Stefi123 — Wikimedia Commons — CC BY-SA</div></section>
+</section>
 
 
 <section id="wifi" class="screen">
