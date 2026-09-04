@@ -202,67 +202,140 @@ h1 {
 
 </style>
 
-
-
-
-
-<style id="visual-port-final">
-:root{--deep:#082d59;--glass:rgba(255,255,255,.86);--glass2:rgba(255,255,255,.94)}
-html,body{min-height:100%}
+<style id="clean-final-style">
+:root{--deep:#082d59;--glass:rgba(255,255,255,.88);--glass2:rgba(255,255,255,.95)}
 body{
-  background-image:
-    linear-gradient(rgba(2,36,66,.05),rgba(2,36,66,.12)),
-    url("port-saint-raphael-panorama.png") !important;
-  background-position:center top !important;
-  background-size:100% auto !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-  background-color:#dcecf4 !important;
+  background:
+    linear-gradient(rgba(0,28,55,.04),rgba(0,28,55,.10)),
+    url("port-saint-raphael-panorama.png") center top / 100% auto no-repeat fixed !important;
+  background-color:#dcecf4!important;
 }
 body::before{display:none!important}
-#accueil,.home-v7{background:transparent!important}
-.home-v7{min-height:100vh;padding:18px;justify-content:flex-start;color:white}
-.home-shell{width:min(1500px,100%);margin:auto;min-height:calc(100vh - 36px);display:grid;grid-template-columns:255px minmax(420px,1fr) 285px;grid-template-rows:auto 1fr auto;gap:16px 20px;align-items:start}
-.glass-card{background:var(--glass);border:1px solid rgba(255,255,255,.72);box-shadow:0 16px 42px rgba(3,25,48,.22);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:24px;color:var(--deep);text-decoration:none}
-.home-left{display:grid;gap:12px}.weather-card,.wifi-home,.help-home{padding:17px}
-.weather-top{display:flex;gap:12px;align-items:center}.weather-emoji{font-size:42px}.weather-temp{font-size:42px;font-weight:900;line-height:1}.weather-city{font-weight:800;margin-top:5px}.weather-desc{font-size:14px;margin-top:2px}.small-link{font-size:12px;font-weight:800;margin-top:10px;opacity:.8}
-.side-title{font-size:22px;font-weight:900;margin-bottom:10px}.side-text{font-size:15px;line-height:1.45}
-.wifi-home{display:grid;grid-template-columns:1fr 90px;gap:10px;align-items:center}.wifi-home .qr-small{width:86px!important;height:86px!important;padding:5px;border-radius:12px}
-.home-center{text-align:center;padding:18px 10px 0;text-shadow:0 3px 15px rgba(0,26,54,.62)}
-.brand-mark{font-size:25px}.brand-small{font-size:25px;letter-spacing:.25em;font-weight:500;line-height:1.1}.brand-small span{font-size:11px;letter-spacing:.28em}
-.home-center h1{margin:14px 0 0;font-family:"Snell Roundhand","Segoe Script","Brush Script MT",cursive;font-size:clamp(72px,8vw,126px);line-height:.82;color:white;font-weight:500;text-shadow:0 4px 18px rgba(0,31,61,.65)}
-.guest-line{font-size:clamp(28px,3vw,44px);font-weight:900;margin-top:18px;color:white!important}.welcome-divider{font-size:22px;margin:5px 0}.welcome-message{font-size:clamp(18px,1.7vw,26px);font-weight:700}
-.home-right{padding:20px}.info-title{font-size:21px;font-weight:900;margin-bottom:14px}.info-row{padding:7px 0;border-bottom:1px solid rgba(8,45,89,.09);font-size:14px;line-height:1.35}.notice-home{margin-top:12px;padding:10px;background:#fff2bc;border-radius:12px;font-weight:800;color:#745700}.good-stay{text-align:center;font-weight:800;margin-top:16px}
-.category-grid{grid-column:1/-1;align-self:end;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.nav-card{min-height:122px;background:var(--glass2);border:1px solid rgba(255,255,255,.78);border-radius:20px;color:var(--deep);text-decoration:none;box-shadow:0 12px 28px rgba(2,29,56,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:15px;display:flex;flex-direction:column;justify-content:center}
-.nav-card span{font-size:31px;margin-bottom:7px}.nav-card b{font-size:19px}.nav-card small{font-size:13px;opacity:.72;margin-top:4px;line-height:1.25}
-.home-footer{grid-column:1/-1;width:max-content;max-width:100%;margin:0 auto;padding:9px 20px;border-radius:999px;background:rgba(4,43,81,.92);color:white;font-size:13px;text-align:center}
-@media(max-width:1000px){
- body{background-attachment:scroll!important;background-size:auto 100vh!important;background-position:center top!important}
- .home-shell{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto}.home-center{grid-column:1/-1;grid-row:1}.home-left{grid-column:1;grid-row:2}.home-right{grid-column:2;grid-row:2}.category-grid{grid-column:1/-1;grid-template-columns:repeat(2,1fr)}.home-footer{grid-column:1/-1}
+.clean-home{min-height:100vh;padding:18px;background:transparent!important;color:#fff}
+.clean-shell{
+  width:min(1500px,100%);
+  margin:auto;
+  min-height:calc(100vh - 36px);
+  display:grid;
+  grid-template-columns:255px minmax(420px,1fr) 300px;
+  grid-template-rows:auto 1fr auto;
+  gap:18px 20px;
+  align-items:start;
 }
-@media(max-width:650px){.home-v7{padding:12px}.home-shell{display:block}.home-center{padding:12px 6px 20px}.home-center h1{font-size:72px}.home-left,.home-right{margin-bottom:12px}.category-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.nav-card{min-height:112px}.home-footer{width:100%;border-radius:16px;margin-top:12px}}
+.glass{
+  background:var(--glass);
+  color:var(--deep);
+  border:1px solid rgba(255,255,255,.75);
+  border-radius:24px;
+  box-shadow:0 14px 36px rgba(3,25,48,.20);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  text-decoration:none;
+}
+.left-stack{display:grid;gap:12px}
+.weather-card,.wifi-card,.help-card,.useful-card{padding:17px}
+.weather-line{display:flex;align-items:center;gap:12px}
+.weather-line span{font-size:40px}.weather-line strong{font-size:42px}.weather-city{font-weight:900;font-size:18px;margin-top:5px}.weather-desc{font-size:14px}
+.wifi-card{display:grid;grid-template-columns:1fr 88px;align-items:center;gap:10px}
+.wifi-card .qr-small{width:84px!important;height:84px!important;padding:5px;border-radius:12px}
+.card-title{font-size:21px;font-weight:900;margin-bottom:10px}
+.help-card div:last-child{font-size:14px}
+.welcome-zone{text-align:center;padding-top:12px;text-shadow:0 3px 15px rgba(0,25,55,.58)}
+.mini-brand{font-size:24px;letter-spacing:.24em;line-height:1.1}.mini-brand span{font-size:11px;letter-spacing:.27em}
+.welcome-zone h1{
+  margin:18px 0 4px;
+  font-family:"Snell Roundhand","Segoe Script","Brush Script MT",cursive;
+  font-size:clamp(78px,8vw,128px);
+  line-height:.82;
+  font-weight:500;color:white;
+}
+.guest-name{font-size:clamp(28px,3vw,44px);font-weight:900;color:white!important;margin-top:16px}
+.sun-sep{font-size:22px;margin:6px 0}
+.welcome-text{font-size:clamp(18px,1.6vw,26px);font-weight:700}
+.useful-card{font-size:14px}.useful-row{padding:7px 0;border-bottom:1px solid rgba(8,45,89,.09)}.goodstay{text-align:center;font-weight:800;margin-top:14px}.notice-home{margin-top:10px;padding:10px;border-radius:10px;background:#fff2bd;color:#725800;font-weight:800}
+.nav-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-self:end}
+.nav-card{
+  min-height:120px;background:var(--glass2);color:var(--deep);text-decoration:none;
+  border-radius:20px;border:1px solid rgba(255,255,255,.78);padding:14px;
+  box-shadow:0 10px 26px rgba(3,25,48,.16);display:flex;flex-direction:column;justify-content:center
+}
+.nav-card span{font-size:30px;margin-bottom:6px}.nav-card b{font-size:18px}.nav-card small{font-size:13px;opacity:.72;margin-top:4px;line-height:1.25}
+.footer-pill{grid-column:1/-1;width:max-content;max-width:100%;margin:auto;padding:9px 20px;border-radius:999px;background:rgba(4,43,81,.92);font-size:13px;text-align:center}
+@media(max-width:1000px){
+  body{background-attachment:scroll!important;background-size:auto 100vh!important;background-position:center top!important}
+  .clean-shell{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto auto}
+  .welcome-zone{grid-column:1/-1;grid-row:1}.left-stack{grid-column:1;grid-row:2}.useful-card{grid-column:2;grid-row:2}.nav-grid{grid-column:1/-1;grid-template-columns:repeat(2,1fr)}.footer-pill{grid-column:1/-1}
+}
+@media(max-width:650px){
+  .clean-home{padding:12px}.clean-shell{display:block}.welcome-zone{padding:10px 4px 20px}.welcome-zone h1{font-size:72px}.left-stack,.useful-card{margin-bottom:12px}.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.nav-card{min-height:110px}.footer-pill{width:100%;border-radius:14px;margin-top:12px}
+}
 </style>
 
 </head>
 <body>
 
-<section id="accueil" class="screen home home-v7">
-  <div class="home-shell">
-    <aside class="home-left">
-      <a class="glass-card weather-card" href="#meteo"><div class="weather-top"><div class="weather-emoji" id="weatherIcon">☀️</div><div><div class="weather-temp" id="weatherTemp">--°</div><div class="weather-city">Saint‑Raphaël</div><div class="weather-desc" id="weatherDesc">Chargement…</div></div></div><div class="small-link">Voir les prévisions →</div></a>
-      <a class="glass-card wifi-home" href="#wifi"><div><div class="side-title">📶 Wi‑Fi</div><div class="side-text"><b>Réseau :</b> Freebox</div><div class="side-text"><b>Mot de passe :</b> fredwifi</div></div><div class="qr-wrap"><img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi"></div></a>
-      <a class="glass-card help-home" href="#urgences"><div class="side-title">☎ Besoin d’aide ?</div><div class="side-text">Numéros utiles et urgences</div><div class="small-link">Ouvrir →</div></a>
+
+<section id="accueil" class="screen clean-home">
+  <div class="clean-shell">
+    <aside class="left-stack">
+      <a class="glass weather-card" href="#meteo">
+        <div class="weather-line"><span id="weatherIcon">☀️</span><strong id="weatherTemp">--°</strong></div>
+        <div class="weather-city">Saint‑Raphaël</div>
+        <div id="weatherDesc" class="weather-desc">Chargement…</div>
+      </a>
+
+      <a class="glass wifi-card" href="#wifi">
+        <div>
+          <div class="card-title">📶 Wi‑Fi</div>
+          <div><b>Réseau :</b> Freebox</div>
+          <div><b>Mot de passe :</b> fredwifi</div>
+        </div>
+        <img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi">
+      </a>
+
+      <a class="glass help-card" href="#urgences">
+        <div class="card-title">☎ Besoin d’aide ?</div>
+        <div>Numéros utiles et urgences</div>
+      </a>
     </aside>
-    <main class="home-center"><div class="brand-mark">☀︎ 〰︎ 🌴</div><div class="brand-small">AIRBNB<br><span>SAINT‑RAPHAËL</span></div><h1>Bienvenue</h1><div id="guestLine" class="guest-line"></div><div class="welcome-divider">☀︎</div><div id="welcomeMessage" class="welcome-message">Profitez pleinement de votre séjour ! ♡</div></main>
-    <aside class="home-right glass-card"><div class="info-title">ⓘ Informations utiles</div><div id="stayDates" class="info-row">Bienvenue dans l’appartement.</div><div id="arrivalInfo" class="info-row">🕒 Arrivée à partir de 15:00</div><div id="departureInfo" class="info-row">🚪 Départ avant 11:00</div><div class="info-row">📶 Wi‑Fi : QR code à gauche</div><div class="info-row">🅿️ Stationnement : voir rubrique</div><div id="customNotice" class="notice-home" style="display:none"></div><div class="good-stay">Merci et bon séjour ☀️</div></aside>
-    <nav class="category-grid">
-      <a class="nav-card" href="#plages"><span>🏖️</span><b>Plages</b><small>À environ 300 m à pied</small></a><a class="nav-card" href="#restaurants"><span>🍴</span><b>Restaurants</b><small>Nos bonnes adresses</small></a><a class="nav-card" href="#cinema"><span>🎬</span><b>Cinéma</b><small>Le Lido</small></a><a class="nav-card" href="#evenements"><span>🎭</span><b>Événements</b><small>Saint‑Raphaël & Fréjus</small></a><a class="nav-card" href="#inventaire"><span>📦</span><b>Inventaire</b><small>Retrouver un objet</small></a>
-      <a class="nav-card" href="#parking"><span>🅿️</span><b>Stationnement</b><small>Solutions à proximité</small></a><a class="nav-card" href="#commerces"><span>🛍️</span><b>Commerces</b><small>Courses et pharmacie</small></a><a class="nav-card" href="#activites"><span>🥾</span><b>Activités</b><small>À voir / à faire</small></a><a class="nav-card" href="#pratique"><span>ⓘ</span><b>Infos pratiques</b><small>Règles et informations</small></a><a class="nav-card" href="#urgences"><span>✚</span><b>Urgences</b><small>Numéros importants</small></a>
+
+    <main class="welcome-zone">
+      <div class="mini-brand">AIRBNB<br><span>SAINT‑RAPHAËL</span></div>
+      <h1>Bienvenue</h1>
+      <div id="guestLine" class="guest-name"></div>
+      <div class="sun-sep">☀️</div>
+      <div id="welcomeMessage" class="welcome-text">Profitez pleinement de votre séjour ! ♡</div>
+    </main>
+
+    <aside class="glass useful-card">
+      <div class="card-title">ⓘ Informations utiles</div>
+      <div id="stayDates" class="useful-row">Bienvenue dans l’appartement.</div>
+      <div id="arrivalInfo" class="useful-row">🕒 Arrivée à partir de 15:00</div>
+      <div id="departureInfo" class="useful-row">🚪 Départ avant 11:00</div>
+      <div class="useful-row">📶 Wi‑Fi : QR code à gauche</div>
+      <div class="useful-row">🅿️ Stationnement : voir rubrique</div>
+      <div id="customNotice" class="notice-home" style="display:none"></div>
+      <div class="goodstay">Merci et bon séjour ☀️</div>
+    </aside>
+
+    <nav class="nav-grid">
+      <a class="nav-card" href="#plages"><span>🏖️</span><b>Plages</b><small>À environ 300 m à pied</small></a>
+      <a class="nav-card" href="#restaurants"><span>🍴</span><b>Restaurants</b><small>Bonnes adresses</small></a>
+      <a class="nav-card" href="#cinema"><span>🎬</span><b>Cinéma</b><small>Le Lido</small></a>
+      <a class="nav-card" href="#evenements"><span>🎭</span><b>Événements</b><small>Saint‑Raphaël & Fréjus</small></a>
+      <a class="nav-card" href="#inventaire"><span>📦</span><b>Inventaire</b><small>Retrouver un objet</small></a>
+
+      <a class="nav-card" href="#parking"><span>🅿️</span><b>Stationnement</b><small>Solutions à proximité</small></a>
+      <a class="nav-card" href="#commerces"><span>🛍️</span><b>Commerces</b><small>Courses et pharmacie</small></a>
+      <a class="nav-card" href="#activites"><span>🥾</span><b>Activités</b><small>À voir / à faire</small></a>
+      <a class="nav-card" href="#pratique"><span>ⓘ</span><b>Infos pratiques</b><small>Règles et informations</small></a>
+      <a class="nav-card" href="#urgences"><span>✚</span><b>Urgences</b><small>Numéros importants</small></a>
     </nav>
-    <div class="home-footer">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
+
+    <div class="footer-pill">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
   </div>
 </section>
+
 
 <section id="wifi" class="screen">
   <div class="detail">
