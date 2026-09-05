@@ -295,22 +295,76 @@ body::before { display:none!important; }
 </style>
 
 
-<style id="fond-sans-zoom-v1">
-body {
-  background-image:
-    linear-gradient(rgba(3,38,69,.05), rgba(3,38,69,.09)),
-    url("https://www.lagrandevoyageuse.com/wp-content/uploads/2024/03/saint-raphael-1-scaled.jpg") !important;
-  background-size: 100% 100% !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
-  background-color: #b9d9e7 !important;
+<style id="fond-fixe-cadre-v1">
+html, body {
+  min-height: 100%;
 }
-@media (max-width: 1050px) {
+
+body {
+  background-color: #b9d9e7 !important;
+  background-image:
+    linear-gradient(rgba(3,38,69,.05), rgba(3,38,69,.10)),
+    url("https://upload.wikimedia.org/wikipedia/commons/c/cf/Saint-Rapha%C3%ABl_-_panoramio_%286%29.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+
+.dashboard-home {
+  min-height: 100vh !important;
+  height: auto !important;
+  padding: 14px 18px 10px !important;
+  background: transparent !important;
+}
+
+.dash-wrap {
+  min-height: calc(100vh - 24px) !important;
+  grid-template-rows: auto 1fr auto auto !important;
+}
+
+.photo-grid {
+  align-self: end !important;
+  margin-top: auto !important;
+}
+
+.dash-footer {
+  margin-top: 2px !important;
+}
+
+.detail,
+.screen:not(.dashboard-home) {
+  background: rgba(255,255,255,.94) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@media (min-width: 768px) and (max-width: 1180px) and (orientation: landscape) {
   body {
-    background-attachment: scroll !important;
-    background-size: 100% 100vh !important;
+    background-size: 100vw 100vh !important;
+    background-position: center center !important;
+    background-attachment: fixed !important;
+  }
+  .dashboard-home {
+    min-height: 100vh !important;
+  }
+  .dash-wrap {
+    min-height: calc(100vh - 24px) !important;
+  }
+}
+
+@media (min-width: 1181px) {
+  body {
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    background-size: auto 100vh !important;
     background-position: center top !important;
+    background-attachment: scroll !important;
   }
 }
 </style>
