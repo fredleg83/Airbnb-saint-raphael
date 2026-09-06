@@ -298,68 +298,68 @@ body::before { display:none!important; }
 
 
 
-<style id="fond-ile-dor-ipad-net">
-html, body { min-height:100%; }
+
+
+
+<style id="fond-ile-dor-visible">
+html, body {
+  min-height: 100%;
+}
 
 body {
-  background:#7fb8de !important;
-  position:relative;
-}
-
-/* Independent fixed photographic layer */
-body::before {
-  content:"";
-  position:fixed;
-  z-index:-2;
-  inset:0;
-  background-color:#7fb8de;
+  background-color: #7fb8de !important;
   background-image:
-    linear-gradient(rgba(0,26,52,.025),rgba(0,26,52,.055)),
-    url("fond-ile-dor.jpg");
-  background-repeat:no-repeat;
-  background-position:center top;
-  background-size:100% auto; /* preserves 4:3, no zoom/crop by cover */
-  transform:translateZ(0);
-  -webkit-transform:translateZ(0);
+    linear-gradient(rgba(0,26,52,.03), rgba(0,26,52,.06)),
+    url("fond-ile-dor.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: 100vw auto !important;
+  background-attachment: fixed !important;
 }
 
+/* Keep the home transparent so the photo is visible */
+.dashboard-home,
+#accueil {
+  background: transparent !important;
+}
+
+/* Keep the tiles at the bottom of the first screen */
 .dashboard-home {
-  min-height:100svh !important;
-  background:transparent !important;
+  min-height: 100vh !important;
 }
 
 .dash-wrap {
-  min-height:calc(100svh - 30px) !important;
+  min-height: calc(100vh - 28px) !important;
 }
 
 .photo-grid {
-  align-self:end !important;
-  margin-top:auto !important;
+  align-self: end !important;
+  margin-top: auto !important;
 }
 
 /* iPad landscape */
-@media (min-width:768px) and (max-width:1366px) and (orientation:landscape) {
-  body::before {
-    background-size:100vw auto !important;
-    background-position:center top !important;
-  }
-  .dashboard-home { min-height:100svh !important; }
-  .dash-wrap { min-height:calc(100svh - 30px) !important; }
-}
-
-/* Desktop: same non-zoomed principle */
-@media (min-width:1367px) {
-  body::before {
-    background-size:100% auto !important;
-    background-position:center top !important;
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+  body {
+    background-size: 100vw auto !important;
+    background-position: center top !important;
+    background-attachment: fixed !important;
   }
 }
 
-/* Portrait phones/tablets: preserve image proportions */
-@media (orientation:portrait) {
-  body::before {
-    background-size:auto 100svh !important;
-    background-position:center top !important;
+/* Desktop */
+@media (min-width: 1367px) {
+  body {
+    background-size: 100vw auto !important;
+    background-position: center top !important;
+  }
+}
+
+/* Portrait phones/tablets */
+@media (orientation: portrait) {
+  body {
+    background-size: auto 100vh !important;
+    background-position: center top !important;
+    background-attachment: scroll !important;
   }
 }
 </style>
