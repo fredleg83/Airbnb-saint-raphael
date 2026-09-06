@@ -295,71 +295,41 @@ body::before { display:none!important; }
 </style>
 
 
-<style id="fond-fixe-cadre-v1">
-html, body {
-  min-height: 100%;
-}
-
+<style id="fond-ile-dor-final">
+html, body { min-height: 100%; }
 body {
-  background-color: #b9d9e7 !important;
+  background-color: #7fb8de !important;
   background-image:
-    linear-gradient(rgba(3,38,69,.05), rgba(3,38,69,.10)),
-    url("https://upload.wikimedia.org/wikipedia/commons/c/cf/Saint-Rapha%C3%ABl_-_panoramio_%286%29.jpg") !important;
+    linear-gradient(rgba(0,26,52,.04), rgba(0,26,52,.08)),
+    url("fond-ile-dor.jpg") !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
-  background-size: cover !important;
   background-attachment: fixed !important;
+  background-size: cover !important;
 }
-
 .dashboard-home {
   min-height: 100vh !important;
-  height: auto !important;
-  padding: 14px 18px 10px !important;
   background: transparent !important;
 }
-
 .dash-wrap {
-  min-height: calc(100vh - 24px) !important;
-  grid-template-rows: auto 1fr auto auto !important;
+  min-height: calc(100vh - 36px) !important;
 }
-
 .photo-grid {
   align-self: end !important;
-  margin-top: auto !important;
 }
-
-.dash-footer {
-  margin-top: 2px !important;
-}
-
-.detail,
-.screen:not(.dashboard-home) {
-  background: rgba(255,255,255,.94) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
 @media (min-width: 768px) and (max-width: 1180px) and (orientation: landscape) {
   body {
     background-size: 100vw 100vh !important;
     background-position: center center !important;
     background-attachment: fixed !important;
   }
-  .dashboard-home {
-    min-height: 100vh !important;
-  }
-  .dash-wrap {
-    min-height: calc(100vh - 24px) !important;
-  }
 }
-
 @media (min-width: 1181px) {
   body {
     background-size: cover !important;
     background-position: center center !important;
   }
 }
-
 @media (max-width: 767px) {
   body {
     background-size: auto 100vh !important;
