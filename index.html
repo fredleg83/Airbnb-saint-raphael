@@ -364,6 +364,25 @@ body {
 }
 </style>
 
+
+<style id="inventory-update-notice-style">
+.inventory-update-notice{
+  max-width:1100px;
+  margin:14px auto 18px;
+  padding:13px 18px;
+  border-radius:14px;
+  background:#fff3cd;
+  border:1px solid #ffe69c;
+  color:#664d03;
+  font-size:15px;
+  line-height:1.4;
+  text-align:center;
+  box-shadow:0 5px 16px rgba(0,0,0,.07);
+}
+.inventory-update-notice strong{font-size:17px}
+.inventory-update-notice span{font-size:13px}
+</style>
+
 </head>
 <body>
 
@@ -617,6 +636,11 @@ body {
 </section>
 
 <section id="inventaire" class="screen">
+<div class="inventory-update-notice">
+  ⚠️ <strong>Inventaire en cours de mise à jour</strong><br>
+  <span>Les informations affichées peuvent être temporairement incomplètes.</span>
+</div>
+
   <div class="detail">
     <h2>📦 Inventaire de l’appartement</h2>
     <p>Vous cherchez quelque chose ? Tapez son nom ou son emplacement.</p>
