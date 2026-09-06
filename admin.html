@@ -27,6 +27,23 @@ button:disabled{opacity:.55}
 @media(max-width:700px){.inv-row{grid-template-columns:1fr 1fr}.inv-row .wide{grid-column:1/-1}.inv-remove{grid-column:1/-1}}
 
 </style>
+
+<style id="inventory-fix-style">
+.inventory-admin{margin-top:24px;border-top:1px solid #dbe8f1;padding-top:20px}
+.inv-row{display:grid;grid-template-columns:2fr .65fr 1fr 1.35fr auto;gap:8px;align-items:center;margin:8px 0}
+.inv-row input{margin:0}
+.inv-remove{width:auto!important;margin:0!important;background:#b33!important;padding:10px 12px!important}
+.inv-add,.inv-reset{width:auto!important;margin:10px 8px 0 0!important;padding:11px 14px!important}
+.inv-add{background:#18784c!important}
+.inv-reset{background:#64748b!important}
+.inv-note{font-size:13px;color:#64748b;line-height:1.4;margin-top:8px}
+@media(max-width:700px){
+  .inv-row{grid-template-columns:1fr 1fr}
+  .inv-row .wide{grid-column:1/-1}
+  .inv-remove{grid-column:1/-1}
+}
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -75,6 +92,7 @@ button:disabled{opacity:.55}
       <p class="note">Ajoute, modifie ou supprime les objets visibles dans la rubrique Inventaire.</p>
       <div id="inventoryRows"></div>
       <button type="button" class="inv-add" id="addInventory">+ Ajouter un objet</button>
+<button type="button" class="inv-reset" id="resetInventory">Restaurer l’inventaire de départ</button>
       <input type="hidden" id="inventory" name="inventory">
     </div>
 
@@ -86,63 +104,105 @@ button:disabled{opacity:.55}
   </div>
 </div>
 
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzO55sj11Wvm5fDDPdPr9QnfCZA2mmvwje-bkHPsQQ1kQnL3HYGmNDxzZxuxWuDmN_z/exec";
-const fields = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
+const API_URL = "https://script.google.com/macros/s/AKfycbw0Nkp3pvMN2fqTNjGBwmuKOVGRenwSCaF6_Oji3Nv9Idee7wvS7Ti5gYkgvekALi3E/exec";
+const DEFAULT_INVENTORY = [{"name": "Grandes assiettes blanches", "qty": "≈ 11", "category": "Vaisselle", "location": "Placard cuisine"}, {"name": "Assiettes grises", "qty": "≈ 7", "category": "Vaisselle", "location": "Placard cuisine"}, {"name": "Petites assiettes blanches", "qty": "≈ 7", "category": "Vaisselle", "location": "Placard cuisine"}, {"name": "Bols blancs", "qty": "≈ 4", "category": "Vaisselle", "location": "Placard cuisine"}, {"name": "Mugs", "qty": "≈ 11", "category": "Vaisselle", "location": "Placard cuisine"}, {"name": "Verres à pied", "qty": "≈ 9", "category": "Verres", "location": "Placard cuisine"}, {"name": "Bouilloire rouge", "qty": "1", "category": "Cuisine", "location": "Cuisine"}, {"name": "Presse-agrumes manuel", "qty": "1", "category": "Cuisine", "location": "Cuisine"}, {"name": "Pichet doseur", "qty": "1", "category": "Cuisine", "location": "Cuisine"}, {"name": "Petite casserole inox", "qty": "1", "category": "Cuisine", "location": "Cuisine"}];
+
 const form = document.getElementById("adminForm");
 const saveBtn = document.getElementById("saveBtn");
 const statusBox = document.getElementById("status");
 
+const textFields = ["guestName","welcomeMessage","stayStart","stayEnd","arrivalTime","departureTime","customNotice"];
 let inventoryData = [];
 let activeScript = null;
 
-function escapeAdmin(s){
-  return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function escapeHtml(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function renderInventoryAdmin(){
+function cloneDefaultInventory() {
+  return DEFAULT_INVENTORY.map(x => ({...x}));
+}
+
+function normalizedName(s) {
+  return String(s || "").trim().toLowerCase();
+}
+
+function mergeInventory(remote) {
+  // If there is no remote inventory yet, initialize with the default inventory.
+  if (!Array.isArray(remote) || remote.length === 0) {
+    return cloneDefaultInventory();
+  }
+
+  // Preserve ALL existing remote items.
+  // Then add default items that are not already present by name.
+  const merged = remote.map(x => ({
+    name: String(x.name || ""),
+    qty: String(x.qty || ""),
+    category: String(x.category || ""),
+    location: String(x.location || "")
+  }));
+
+  const existing = new Set(merged.map(x => normalizedName(x.name)).filter(Boolean));
+  DEFAULT_INVENTORY.forEach(item => {
+    if (!existing.has(normalizedName(item.name))) {
+      merged.push({...item});
+    }
+  });
+
+  return merged;
+}
+
+function renderInventoryAdmin() {
   const box = document.getElementById("inventoryRows");
-  if(!box) return;
+  if (!box) return;
   box.innerHTML = "";
 
-  inventoryData.forEach((item,i)=>{
+  inventoryData.forEach((item, i) => {
     const row = document.createElement("div");
     row.className = "inv-row";
     row.innerHTML =
-      '<input class="wide" data-k="name" data-i="'+i+'" placeholder="Objet" value="'+escapeAdmin(item.name||"")+'">' +
-      '<input data-k="qty" data-i="'+i+'" placeholder="Qté" value="'+escapeAdmin(item.qty||"")+'">' +
-      '<input data-k="category" data-i="'+i+'" placeholder="Catégorie" value="'+escapeAdmin(item.category||"")+'">' +
-      '<input data-k="location" data-i="'+i+'" placeholder="Emplacement" value="'+escapeAdmin(item.location||"")+'">' +
+      '<input class="wide" data-k="name" data-i="'+i+'" placeholder="Objet" value="'+escapeHtml(item.name)+'">' +
+      '<input data-k="qty" data-i="'+i+'" placeholder="Qté" value="'+escapeHtml(item.qty)+'">' +
+      '<input data-k="category" data-i="'+i+'" placeholder="Catégorie" value="'+escapeHtml(item.category)+'">' +
+      '<input data-k="location" data-i="'+i+'" placeholder="Emplacement" value="'+escapeHtml(item.location)+'">' +
       '<button type="button" class="inv-remove" data-remove="'+i+'">Supprimer</button>';
     box.appendChild(row);
   });
 
-  box.querySelectorAll("input[data-i]").forEach(el=>{
-    el.addEventListener("input",()=>{
+  box.querySelectorAll("input[data-i]").forEach(el => {
+    el.addEventListener("input", () => {
       const i = Number(el.dataset.i);
+      if (!inventoryData[i]) return;
       inventoryData[i][el.dataset.k] = el.value;
     });
   });
 
-  box.querySelectorAll("[data-remove]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      inventoryData.splice(Number(btn.dataset.remove),1);
+  box.querySelectorAll("[data-remove]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      inventoryData.splice(Number(btn.dataset.remove), 1);
       renderInventoryAdmin();
     });
   });
 }
 
-document.getElementById("addInventory").addEventListener("click",()=>{
-  inventoryData.push({name:"",qty:"1",category:"",location:""});
+document.getElementById("addInventory").addEventListener("click", () => {
+  inventoryData.push({name:"", qty:"1", category:"", location:""});
   renderInventoryAdmin();
 });
 
-function jsonp(url, callbackName, onError){
+document.getElementById("resetInventory").addEventListener("click", () => {
+  inventoryData = cloneDefaultInventory();
+  renderInventoryAdmin();
+  statusBox.textContent = "Inventaire de départ restauré. Appuie sur Enregistrer pour valider.";
+});
+
+function jsonp(url, callbackName, onError) {
   if (activeScript) {
     activeScript.remove();
     activeScript = null;
   }
-
   activeScript = document.createElement("script");
   const sep = url.includes("?") ? "&" : "?";
   activeScript.src = url + sep + "callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
@@ -150,44 +210,48 @@ function jsonp(url, callbackName, onError){
   document.head.appendChild(activeScript);
 }
 
-window.__loadAdmin = function(data){
-  fields.forEach(function(id){
+window.__loadAdmin = function(data) {
+  textFields.forEach(id => {
     const el = document.getElementById(id);
-    if (el && data && Object.prototype.hasOwnProperty.call(data,id)) {
+    if (el && data && Object.prototype.hasOwnProperty.call(data, id)) {
       el.value = data[id] || "";
     }
   });
 
-  inventoryData = Array.isArray(data && data.inventory) ? data.inventory : [];
+  inventoryData = mergeInventory(data && data.inventory);
   renderInventoryAdmin();
 
-  statusBox.textContent = "✅ Informations chargées.";
+  statusBox.textContent = "✅ Informations chargées. Inventaire complet conservé.";
   if (activeScript) {
     activeScript.remove();
     activeScript = null;
   }
 };
 
-window.__saveAdmin = function(result){
+window.__saveAdmin = function(result) {
   if (activeScript) {
     activeScript.remove();
     activeScript = null;
   }
-
   saveBtn.disabled = false;
 
   if (result && result.ok) {
-    statusBox.textContent = "✅ Enregistré et vérifié. L’écran principal va se mettre à jour.";
+    // IMPORTANT: use the exact saved list returned by Apps Script.
+    inventoryData = mergeInventory(result.config && result.config.inventory);
+    renderInventoryAdmin();
+    statusBox.textContent = "✅ Enregistré. L’inventaire complet a été conservé.";
   } else {
     statusBox.textContent = "❌ Échec de l’enregistrement : " + ((result && result.error) ? result.error : "erreur inconnue");
   }
 };
 
-jsonp(API_URL + "?action=get", "__loadAdmin", function(){
-  statusBox.textContent = "⚠️ Impossible de charger les données actuelles.";
+jsonp(API_URL + "?action=get", "__loadAdmin", function() {
+  inventoryData = cloneDefaultInventory();
+  renderInventoryAdmin();
+  statusBox.textContent = "⚠️ Données distantes indisponibles : inventaire de départ chargé localement.";
 });
 
-form.addEventListener("submit", function(ev){
+form.addEventListener("submit", function(ev) {
   ev.preventDefault();
 
   const secret = document.getElementById("secret").value;
@@ -196,11 +260,19 @@ form.addEventListener("submit", function(ev){
     return;
   }
 
+  // Remove completely empty draft rows, but preserve every real item.
+  inventoryData = inventoryData.filter(item =>
+    String(item.name || "").trim() ||
+    String(item.qty || "").trim() ||
+    String(item.category || "").trim() ||
+    String(item.location || "").trim()
+  );
+
   const params = new URLSearchParams();
   params.set("action", "set");
   params.set("secret", secret);
 
-  fields.forEach(function(id){
+  textFields.forEach(id => {
     params.set(id, document.getElementById(id).value || "");
   });
 
@@ -208,13 +280,14 @@ form.addEventListener("submit", function(ev){
   params.set("_nonce", Date.now().toString(36) + Math.random().toString(36).slice(2));
 
   saveBtn.disabled = true;
-  statusBox.textContent = "Enregistrement…";
+  statusBox.textContent = "Enregistrement de l’inventaire complet…";
 
-  jsonp(API_URL + "?" + params.toString(), "__saveAdmin", function(){
+  jsonp(API_URL + "?" + params.toString(), "__saveAdmin", function() {
     saveBtn.disabled = false;
     statusBox.textContent = "❌ Impossible de joindre Apps Script.";
   });
 });
 </script>
+
 </body>
 </html>
