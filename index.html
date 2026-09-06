@@ -831,12 +831,10 @@ function applyRemoteConfig(data) {
   if (arrival) arrival.textContent = cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
   if (departure) departure.textContent = cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
 
-  if (Array.isArray(cfg.inventory) && cfg.inventory.length) {
-    inventoryItems = cfg.inventory;
+  inventoryItems = mergeInventoryWithDefaults(cfg.inventory);
     inventoryCategory = "Tous";
     renderInventoryFilters();
     renderInventory();
-  }
 
   if (notice) {
     if (cfg.customNotice) {
@@ -889,7 +887,36 @@ const INVENTORY_DEMO = [
   {name:"Petite casserole inox", qty:"1", category:"Cuisine", location:"Cuisine"}
 ];
 
-let inventoryItems = INVENTORY_DEMO.slice();
+function mergeInventoryWithDefaults(remoteItems){
+  const defaults = INVENTORY_DEMO.map(x => ({...x}));
+
+  if (!Array.isArray(remoteItems) || remoteItems.length === 0) {
+    return defaults;
+  }
+
+  const cleanRemote = remoteItems
+    .filter(x => x && (x.name || x.qty || x.category || x.location))
+    .map(x => ({
+      name: String(x.name || ""),
+      qty: String(x.qty || ""),
+      category: String(x.category || ""),
+      location: String(x.location || "")
+    }));
+
+  const key = s => String(s || "").trim().toLowerCase();
+  const remoteNames = new Set(cleanRemote.map(x => key(x.name)).filter(Boolean));
+
+  defaults.forEach(item => {
+    if (!remoteNames.has(key(item.name))) {
+      cleanRemote.push({...item});
+    }
+  });
+
+  return cleanRemote;
+}
+
+
+let inventoryItems = mergeInventoryWithDefaults([]);
 let inventoryCategory = "Tous";
 
 function norm(s){
