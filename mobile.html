@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airbnb Saint-Raphaël — Smartphone</title>
+<style>
+:root {
+  --navy:#0b376b;
+  --blue:#0b78d1;
+  --gold:#f2b51d;
+  --cream:#fffdf8;
+  --shadow:0 18px 50px rgba(5,37,68,.22);
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:#173b60;
+  background:linear-gradient(180deg,#74d3ff 0%,#92e3ff 33%,#2fb7c7 58%,#e8d0a3 100%);
+}
+body::before {
+  content:"";
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 12%,rgba(255,255,255,.55),transparent 25%),
+    radial-gradient(ellipse at 90% 55%,rgba(223,134,62,.55) 0 10%,transparent 11%),
+    radial-gradient(ellipse at 7% 78%,rgba(35,124,74,.50) 0 10%,transparent 11%);
+}
+.screen {
+  min-height:100vh;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.home {
+  justify-content:flex-start;
+}
+header {
+  display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+}
+.title-wrap { flex:1;text-align:center;padding-left:220px; }
+h1 {
+  margin:6px 0 8px;
+  font-family:"Snell Roundhand","Segoe Script","Brush Script MT",cursive;
+  font-size:clamp(54px,7vw,110px);
+  line-height:.94;color:var(--navy);
+  text-shadow:0 3px rgba(255,255,255,.7);
+}
+.subtitle {font-size:clamp(20px,2vw,34px);font-weight:700;}
+.weather {
+  min-width:235px;background:linear-gradient(145deg,#0c86e6,#0a70c7);
+  color:#fff;border-radius:28px;padding:20px 24px;box-shadow:var(--shadow);
+}
+.weather .temp {font-size:44px;font-weight:800;}
+.weather .sun {font-size:46px;float:left;margin-right:14px;}
+.tiles {
+  display:grid;
+  grid-template-columns:1.25fr 1fr 1fr 1.15fr 1.15fr;
+  gap:18px;
+  margin-top:22px;
+}
+.tile {
+  text-decoration:none;color:inherit;
+  background:rgba(255,255,255,.90);
+  border-radius:26px;padding:22px;
+  box-shadow:var(--shadow);
+  min-height:170px;
+  display:flex;flex-direction:column;justify-content:center;
+  transition:.18s ease;
+}
+.tile:hover,.tile:focus { transform:translateY(-4px) scale(1.01); background:white; }
+.tile .icon {font-size:48px;margin-bottom:8px}
+.tile h3 {margin:0 0 6px;font-size:25px}
+.tile p {margin:0;font-size:18px;line-height:1.3}
+.wifi-tile {display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.qr-small {
+  width:110px;height:110px;border-radius:12px;background:white;padding:6px;
+  box-shadow:0 6px 20px rgba(0,0,0,.16);
+}
+.main {
+  display:grid;grid-template-columns:1.1fr 1.15fr 1fr .9fr;gap:18px;margin-top:18px;
+}
+.panel {
+  background:rgba(255,255,255,.93);
+  border-radius:26px;padding:24px;box-shadow:var(--shadow);
+}
+.panel h2 {margin:0 0 14px;font-size:28px}
+.panel li,.panel p {font-size:19px;line-height:1.45}
+.hero {
+  color:#fff;text-align:center;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,rgba(7,111,193,.94),rgba(9,54,105,.96));
+}
+.hero .city {font-family:"Segoe Script",cursive;font-size:50px}
+.quick {
+  display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:18px;
+}
+.quick a {
+  text-decoration:none;text-align:center;color:white;background:var(--navy);
+  padding:15px 8px;border-radius:18px;font-size:16px;font-weight:700;
+  box-shadow:0 8px 22px rgba(5,44,84,.22);
+}
+.quick a:hover {background:#0b5195}
+.detail {
+  background:rgba(255,255,255,.95);
+  border-radius:30px;
+  padding:34px;
+  box-shadow:var(--shadow);
+  max-width:1100px;
+  width:100%;
+  margin:auto;
+}
+.detail h2 {font-size:42px;margin:0 0 20px;color:var(--navy)}
+.detail p,.detail li {font-size:23px;line-height:1.55}
+.detail ul {padding-left:28px}
+.back {
+  display:inline-block;
+  margin-top:24px;
+  text-decoration:none;
+  color:white;background:var(--navy);
+  padding:14px 20px;border-radius:16px;font-weight:800;font-size:18px;
+}
+.back:hover {background:#0b5195}
+.qr-big-wrap {
+  display:grid;grid-template-columns:1fr 280px;gap:32px;align-items:center;
+}
+.qr-big {
+  width:280px;height:280px;background:white;padding:10px;border-radius:20px;
+  box-shadow:0 8px 28px rgba(0,0,0,.16);
+}
+.note {
+  background:#ffe061;border-radius:16px;padding:16px 20px;margin-top:20px;
+  font-weight:700;
+}
+@media (max-width:1050px) {
+  .title-wrap {padding-left:0}
+  .tiles {grid-template-columns:repeat(2,1fr)}
+  .main {grid-template-columns:1fr}
+  .quick {grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:700px) {
+  header {display:block}
+  .weather {margin:18px auto 0;max-width:270px}
+  .tiles {grid-template-columns:1fr}
+  .quick {grid-template-columns:repeat(2,1fr)}
+  .qr-big-wrap {grid-template-columns:1fr}
+  .qr-big {width:220px;height:220px}
+}
+
+.place-list{display:grid;gap:14px;margin:18px 0}
+.place-card{
+  display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;
+  background:#f6fbff;border:1px solid #dbeaf6;border-radius:18px;padding:16px 18px;
+}
+.place-card h3{margin:0 0 5px;font-size:22px;color:var(--navy)}
+.place-card p{margin:0;font-size:17px;line-height:1.35}
+.map-btn{
+  text-decoration:none;color:white;background:#0b78d1;
+  padding:12px 16px;border-radius:14px;font-weight:800;white-space:nowrap;
+}
+.map-btn:hover{background:#095fa8}
+.forecast{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:22px}
+.forecast-day{background:#f6fbff;border:1px solid #dbeaf6;border-radius:18px;padding:16px;text-align:center}
+.forecast-day .ficon{font-size:34px}
+.forecast-day .fday{font-weight:800;color:var(--navy);margin-bottom:7px}
+.forecast-day .temps{font-size:18px}
+.weather-status{font-size:16px;color:#56708d;margin-top:14px}
+@media(max-width:800px){
+  .place-card{grid-template-columns:1fr}
+  .forecast{grid-template-columns:repeat(2,1fr)}
+}
+
+
+.restaurant-card{grid-template-columns:minmax(0,1fr) auto}
+.place-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.web-btn{
+  text-decoration:none;color:white;padding:12px 14px;border-radius:14px;
+  font-weight:800;white-space:nowrap;
+}
+.web-btn{background:#5865a8}
+.web-btn:hover{background:#444f8c}
+.phone-line{margin-top:8px!important;font-size:18px!important}
+.no-web{font-size:13px;color:#718096;padding:8px 4px;max-width:120px;text-align:center}
+@media(max-width:800px){
+  .restaurant-card{grid-template-columns:1fr}
+  .place-actions{justify-content:flex-start}
+}
+
+
+/* Inventaire */
+.inventory-search{width:100%;box-sizing:border-box;padding:15px 17px;border:1px solid #c9dce9;border-radius:14px;font-size:17px;margin:8px 0 16px;background:#fff}
+.inventory-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.inv-filter{border:1px solid #c7d9e7;background:#fff;color:#173b60;border-radius:999px;padding:8px 12px;font-weight:700;cursor:pointer}
+.inv-filter.active{background:#0b78d1;color:#fff;border-color:#0b78d1}
+.inventory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.inventory-item{background:#fff;border:1px solid #dbe8f1;border-radius:16px;padding:15px;box-shadow:0 5px 16px rgba(18,55,88,.07)}
+.inventory-item h3{margin:0 0 8px;color:#0b376b}
+.inventory-meta{font-size:14px;line-height:1.5;color:#526b80}
+.inventory-empty{padding:20px;background:#fff;border-radius:14px;text-align:center;color:#61778a}
+
+</style>
+
+<style id="dashboard-reference-v1">
+body {
+  background:
+    linear-gradient(rgba(3,38,69,.08), rgba(3,38,69,.12)),
+    url("https://static.verychic.com/images/565086/fr/desktop/Saint_Raphael_vue_aerienne.jpg") center 30% / cover fixed no-repeat !important;
+  background-color:#b9d9e7 !important;
+}
+body::before { display:none!important; }
+.dashboard-home { min-height:100vh; padding:18px; background:transparent!important; color:#fff; }
+.dash-wrap {
+  width:min(1500px,100%); min-height:calc(100vh - 36px); margin:auto;
+  display:grid; grid-template-columns:285px minmax(470px,1fr) 310px;
+  grid-template-rows:auto 1fr auto; gap:16px 22px; align-items:start;
+}
+.glass {
+  background:rgba(255,255,255,.88); color:#082d59; text-decoration:none;
+  border:1px solid rgba(255,255,255,.8); border-radius:25px;
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 16px 36px rgba(4,30,55,.20);
+}
+.left-rail { display:grid; gap:12px; }
+.weather-box,.wifi-box,.help-box,.info-box { padding:18px; }
+.weather-row { display:flex; align-items:center; gap:14px; }
+.big-weather { font-size:48px; }
+.big-temp { font-size:46px; font-weight:900; line-height:1; }
+.weather-city { font-size:18px; font-weight:900; margin-top:7px; }
+.weather-desc { font-size:14px; }
+.wifi-box { display:grid; grid-template-columns:1fr 94px; gap:10px; align-items:center; }
+.wifi-box .qr-small { width:90px!important; height:90px!important; border-radius:12px; padding:5px; background:#fff; }
+.rail-title { font-size:22px; font-weight:900; margin-bottom:10px; }
+.small-copy,.wifi-copy { font-size:15px; line-height:1.45; }
+
+.hero-zone { text-align:center; padding-top:8px; text-shadow:0 3px 15px rgba(0,35,64,.58); }
+.brand { font-size:20px; line-height:1.15; letter-spacing:.12em; }
+.brand span { display:block; font-size:27px; letter-spacing:.28em; margin-top:3px; }
+.brand small { display:block; font-size:11px; letter-spacing:.3em; }
+.hero-zone h1 {
+  margin:14px 0 6px; color:white; font-size:clamp(54px,5.6vw,84px);
+  line-height:.95; font-weight:850; letter-spacing:-.02em; text-shadow:0 4px 18px rgba(0,31,61,.55);
+}
+.hero-sun { font-size:46px; margin:8px 0 7px; }
+.hero-message { font-size:clamp(18px,1.6vw,25px); font-weight:750; }
+.hero-guest { margin-top:9px; font-size:clamp(22px,2.2vw,34px); font-weight:900; color:white!important; }
+
+.info-box { font-size:15px; }
+.info-line { padding:7px 0; border-bottom:1px solid rgba(8,45,89,.08); }
+.dash-notice { margin-top:10px; padding:10px; border-radius:12px; background:#fff1b5; color:#6f5500; font-weight:800; }
+.thanks { text-align:center; font-weight:900; margin-top:14px; }
+
+.photo-grid {
+  grid-column:1/-1; align-self:end; display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px;
+}
+.photo-card {
+  overflow:hidden; background:rgba(255,255,255,.91); color:#082d59; text-decoration:none;
+  border:1px solid rgba(255,255,255,.85); border-radius:20px;
+  box-shadow:0 12px 30px rgba(4,30,55,.18); backdrop-filter:blur(10px);
+  transition:.18s ease;
+}
+.photo-card:hover,.photo-card:focus { transform:translateY(-3px); }
+.photo-card img { width:100%; height:96px; display:block; object-fit:cover; }
+.photo-card div { padding:11px 14px 14px; min-height:82px; }
+.photo-card b { display:block; font-size:19px; }
+.photo-card span { display:block; font-size:13px; line-height:1.3; opacity:.78; margin-top:4px; }
+
+.dash-footer {
+  grid-column:1/-1; width:max-content; max-width:100%; margin:auto;
+  padding:9px 22px; border-radius:999px; background:rgba(4,43,81,.92);
+  color:#fff; font-size:13px; text-align:center;
+}
+
+@media(max-width:1050px) {
+  body { background-attachment:scroll!important; background-position:center top!important; }
+  .dash-wrap { grid-template-columns:1fr 1fr; grid-template-rows:auto auto auto auto; }
+  .hero-zone { grid-column:1/-1; grid-row:1; }
+  .left-rail { grid-column:1; grid-row:2; }
+  .info-box { grid-column:2; grid-row:2; }
+  .photo-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media(max-width:650px) {
+  .dashboard-home { padding:10px; }
+  .dash-wrap { display:block; }
+  .hero-zone { padding:10px 4px 20px; }
+  .hero-zone h1 { font-size:54px; }
+  .left-rail,.info-box { margin-bottom:12px; }
+  .photo-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .photo-card img { height:80px; }
+  .photo-card div { min-height:76px; padding:9px 10px 11px; }
+  .dash-footer { width:100%; border-radius:14px; margin-top:12px; }
+}
+</style>
+
+
+
+
+
+
+
+
+<style id="fond-ile-dor-visible">
+html, body {
+  min-height: 100%;
+}
+
+body {
+  background-color: #7fb8de !important;
+  background-image:
+    linear-gradient(rgba(0,26,52,.03), rgba(0,26,52,.06)),
+    url("fond-ile-dor.jpg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: 100vw auto !important;
+  background-attachment: fixed !important;
+}
+
+/* Keep the home transparent so the photo is visible */
+.dashboard-home,
+#accueil {
+  background: transparent !important;
+}
+
+/* Keep the tiles at the bottom of the first screen */
+.dashboard-home {
+  min-height: 100vh !important;
+}
+
+.dash-wrap {
+  min-height: calc(100vh - 28px) !important;
+}
+
+.photo-grid {
+  align-self: end !important;
+  margin-top: auto !important;
+}
+
+/* iPad landscape */
+@media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+  body {
+    background-size: 100vw auto !important;
+    background-position: center top !important;
+    background-attachment: fixed !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1367px) {
+  body {
+    background-size: 100vw auto !important;
+    background-position: center top !important;
+  }
+}
+
+/* Portrait phones/tablets */
+@media (orientation: portrait) {
+  body {
+    background-size: auto 100vh !important;
+    background-position: center top !important;
+    background-attachment: scroll !important;
+  }
+}
+</style>
+
+
+<style id="inventory-update-notice-style">
+.inventory-update-notice{
+  max-width:1100px;
+  margin:14px auto 18px;
+  padding:13px 18px;
+  border-radius:14px;
+  background:#fff3cd;
+  border:1px solid #ffe69c;
+  color:#664d03;
+  font-size:15px;
+  line-height:1.4;
+  text-align:center;
+  box-shadow:0 5px 16px rgba(0,0,0,.07);
+}
+.inventory-update-notice strong{font-size:17px}
+.inventory-update-notice span{font-size:13px}
+</style>
+
+
+<style id="smartphone-layout-v1">
+@media (max-width: 767px) {
+  html { scroll-behavior: smooth; }
+  body {
+    background-attachment: scroll !important;
+    background-size: auto 100vh !important;
+    background-position: center top !important;
+    overflow-x: hidden;
+  }
+
+  .dashboard-home {
+    min-height: 100svh !important;
+    padding: 10px 10px 16px !important;
+  }
+
+  .dash-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    min-height: auto !important;
+    width: 100% !important;
+  }
+
+  .hero-zone {
+    order: 1;
+    padding: 12px 8px 16px !important;
+    min-height: 42svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .brand {
+    font-size: 15px !important;
+  }
+  .brand span {
+    font-size: 20px !important;
+    letter-spacing: .20em !important;
+  }
+  .brand small {
+    font-size: 9px !important;
+  }
+
+  .hero-zone h1 {
+    font-size: clamp(42px, 12vw, 62px) !important;
+    line-height: .98 !important;
+    margin: 12px 0 5px !important;
+  }
+
+  .hero-sun { font-size: 34px !important; margin: 4px 0 !important; }
+  .hero-message { font-size: 16px !important; }
+  .hero-guest { font-size: 22px !important; margin-top: 6px !important; }
+
+  .left-rail {
+    order: 2;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+  }
+
+  .info-box { order: 3; }
+
+  .weather-box, .wifi-box, .help-box, .info-box {
+    padding: 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .weather-box {
+    display: block !important;
+  }
+  .weather-row {
+    gap: 10px !important;
+  }
+  .big-weather { font-size: 36px !important; }
+  .big-temp { font-size: 36px !important; }
+  .weather-city { font-size: 16px !important; }
+  .weather-desc { font-size: 13px !important; }
+
+  .wifi-box {
+    grid-template-columns: 1fr 76px !important;
+  }
+  .wifi-box .qr-small {
+    width: 72px !important;
+    height: 72px !important;
+  }
+
+  .rail-title { font-size: 18px !important; margin-bottom: 7px !important; }
+  .small-copy, .wifi-copy, .info-box { font-size: 14px !important; }
+
+  .photo-grid {
+    order: 4;
+    grid-column: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 9px !important;
+    margin-top: 2px !important;
+  }
+
+  .photo-card {
+    border-radius: 16px !important;
+  }
+  .photo-card img {
+    height: 88px !important;
+  }
+  .photo-card div {
+    min-height: 74px !important;
+    padding: 9px 10px 11px !important;
+  }
+  .photo-card b {
+    font-size: 16px !important;
+  }
+  .photo-card span {
+    font-size: 11px !important;
+  }
+
+  .dash-footer {
+    order: 5;
+    width: 100% !important;
+    border-radius: 14px !important;
+    margin-top: 2px !important;
+    padding: 9px 12px !important;
+    font-size: 11px !important;
+  }
+
+  .detail {
+    padding: 14px 10px 30px !important;
+  }
+  .detail .panel {
+    border-radius: 18px !important;
+    padding: 15px !important;
+  }
+  .section-title {
+    font-size: 27px !important;
+  }
+
+  .place-grid, .forecast-grid, .inventory-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .inventory-update-notice {
+    margin: 8px 0 14px !important;
+    padding: 11px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .quick {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .quick a {
+    min-width: 0 !important;
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+  }
+
+  input, select, button, textarea {
+    font-size: 16px !important; /* avoids Safari auto-zoom */
+  }
+}
+</style>
+
+</head>
+<body>
+
+
+<section id="accueil" class="screen dashboard-home">
+  <div class="dash-wrap">
+
+    <aside class="left-rail">
+      <a href="#meteo" class="glass weather-box">
+        <div class="weather-row">
+          <span id="weatherIcon" class="big-weather">☀️</span>
+          <div>
+            <div id="weatherTemp" class="big-temp">--°</div>
+            <div class="weather-city">Saint‑Raphaël</div>
+            <div id="weatherDesc" class="weather-desc">Chargement…</div>
+          </div>
+        </div>
+      </a>
+
+      <a href="#wifi" class="glass wifi-box">
+        <div class="wifi-copy">
+          <div class="rail-title">📶 Wi‑Fi</div>
+          <div><b>Réseau :</b> Freebox</div>
+          <div><b>Mot de passe :</b> fredwifi</div>
+        </div>
+        <img class="qr-small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code Wi-Fi">
+      </a>
+
+      <a href="#urgences" class="glass help-box">
+        <div class="rail-title">☎ Besoin d’aide ?</div>
+        <div class="small-copy">Numéros utiles et urgences</div>
+      </a>
+    </aside>
+
+    <main class="hero-zone">
+      <div class="brand">☀︎ 〰︎ 🌴<br><span>AIRBNB</span><small>SAINT‑RAPHAËL</small></div>
+      <h1>Bienvenue à<br>Saint‑Raphaël</h1>
+      <div class="hero-sun">☀️</div>
+      <div id="welcomeMessage" class="hero-message">Profitez pleinement de votre séjour ! ♡</div>
+      <div id="guestLine" class="hero-guest"></div>
+    </main>
+
+    <aside class="glass info-box">
+      <div class="rail-title">ⓘ Informations utiles</div>
+      <div id="stayDates" class="info-line">Bienvenue dans l’appartement.</div>
+      <div id="arrivalInfo" class="info-line">🕒 Arrivée à partir de 15:00</div>
+      <div id="departureInfo" class="info-line">🚪 Départ avant 11:00</div>
+      <div class="info-line">🐾 Animaux : autorisés sous conditions</div>
+      <div class="info-line">🅿️ Stationnement : voir rubrique</div>
+      <div class="info-line">📦 Inventaire : tout est là !</div>
+      <div id="customNotice" class="dash-notice" style="display:none"></div>
+      <div class="thanks">Merci et bon séjour ! ☀️</div>
+    </aside>
+
+    <nav class="photo-grid">
+      <a class="photo-card" href="#plages"><img src="plages.jpg"><div><b>Plages</b><span>Les plus belles plages et criques</span></div></a>
+      <a class="photo-card" href="#restaurants"><img src="restaurants.jpg"><div><b>Restaurants</b><span>Nos bonnes adresses à découvrir</span></div></a>
+      <a class="photo-card" href="#cinema"><img src="cinema.jpg"><div><b>Cinéma</b><span>Programmation et horaires</span></div></a>
+      <a class="photo-card" href="#evenements"><img src="evenements.jpg"><div><b>Événements</b><span>Agenda Saint‑Raphaël & Fréjus</span></div></a>
+      <a class="photo-card" href="#inventaire"><img src="inventaire.jpg"><div><b>Inventaire</b><span>Tout ce que vous devez savoir</span></div></a>
+
+      <a class="photo-card" href="#parking"><img src="parking.jpg"><div><b>Stationnement</b><span>Où se garer facilement</span></div></a>
+      <a class="photo-card" href="#pratique"><img src="transports.jpg"><div><b>Transports</b><span>Train, bus et déplacements</span></div></a>
+      <a class="photo-card" href="#commerces"><img src="commerces.jpg"><div><b>Commerces</b><span>Supermarchés et commerces utiles</span></div></a>
+      <a class="photo-card" href="#activites"><img src="activites.jpg"><div><b>Activités</b><span>Loisirs autour de Saint‑Raphaël</span></div></a>
+      <a class="photo-card" href="#pratique"><img src="pratique.jpg"><div><b>Infos pratiques</b><span>Numéros utiles et informations</span></div></a>
+    </nav>
+
+    <div class="dash-footer">📍 Saint‑Raphaël, Côte d’Azur &nbsp; | &nbsp; ❤️ Merci de prendre soin du logement</div>
+  </div>
+</section>
+
+
+<section id="wifi" class="screen">
+  <div class="detail">
+    <h2>📶 Wi‑Fi</h2>
+    <div class="qr-big-wrap">
+      <div>
+        <p><strong>Réseau :</strong> Freebox</p>
+        <p><strong>Mot de passe :</strong> fredwifi</p>
+        <p>Scannez le QR code avec l’appareil photo de votre téléphone pour rejoindre directement le réseau.</p>
+        <div class="note">QR code configuré pour le réseau “Freebox” avec le mot de passe “fredwifi”.</div>
+      </div>
+      <img class="qr-big" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAAFeAQAAAADlUEq3AAACKUlEQVR4nO2bQY7bMAxFP0cGZinfoEdRbzBn6s3sAwVQ9hJ+FxIdKbPJuB2XQKmFEdlvQeCDtD7pCPHyqm+vs4DDDjvs8P8Ag2TR35FEIklmACkHchs5IzE7PC2SBSRJbpHkhtB2QNR7HXEFDcO7iACo/bKvVTT9qoisF4Xh8Nfh5flGyiuQcoWkXJf5pGokZofH9aygIJZFgEDs6+2yMBw+DXcFkyYb9w8AQBWkXAEgEED95jAcPg03BaVtYr/J/eO2sOXgXa4Iw+HTcD+G9lWARFKNROD81EjMDk+rWYUNwOAHNwQiZQwPXEGjcMvBnnmaiGQGyBzILRZoNrqCFmHtycTx8nD0AMJDWiMxOzytQa1EzbeWeZHsgmbvqpmFj65a0W0+KmvuW38PWoaHKjrWU2hTux9n/D1oFj56MoGCmKnurwoT60LcQwFi/uYwHD4NDxVTL2EcMQ0TJ89Bk/ChYLfwrZ5usfT5ILM6Q1fQJjxOeBO7fejjQmDS0hU0CetZNGv/5Sig44HUq6hdeHAT2hftVnAoqj6jNwwffdHw5N6bln25H7QLP88m5la26usK2oU/f6uWddfMfHQFbcPzt2rHy7AZiUc9dQWtw/1bNUBEFvDXjwL5GUvbAvflmjAc/ltwylWwyzu1xlb5F2E4fAqOpIi8N0ffcnBfA68Ow+FX1/QeJIfJ/OARvSdjF57PomVqb3fd/CRjGhb//6DDDjvs8B/AvwFko2Dc5cLSOgAAAABJRU5ErkJggg==" alt="QR code de connexion Wi-Fi Freebox">
+    </div>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+
+<section id="restaurants" class="screen">
+  <div class="detail">
+    <h2>🍴 Restaurants à proximité</h2>
+    <p>Vous trouverez ci-dessous le téléphone de chaque restaurant ainsi que, lorsqu’il existe, son site web et son itinéraire.</p>
+    <div class="place-list">
+      
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>Les Petits Secrets</h3>
+          <p>101 rue de la République<br>Restaurant bistronomique</p>
+          <p class="phone-line">☎️ <strong>06 46 32 30 09</strong></p>
+        </div>
+        <div class="place-actions">
+          <a class="web-btn" target="_blank" rel="noopener" href="https://www.facebook.com/p/Restaurant-les-petits-secrets-100076590272481/?locale=fr_FR">🌐 Facebook</a>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Les%20Petits%20Secrets%2C%20101%20rue%20de%20la%20R%C3%A9publique%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>Le Bouchon Provençal</h3>
+          <p>59 rue de la Vieille Église<br>Cuisine provençale</p>
+          <p class="phone-line">☎️ <strong>04 94 53 89 18</strong></p>
+        </div>
+        <div class="place-actions">
+          <span class="no-web">Site officiel non confirmé</span>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Le%20Bouchon%20Proven%C3%A7al%2C%2059%20rue%20de%20la%20Vieille%20%C3%89glise%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>L’Annexe</h3>
+          <p>23 rue Thiers<br>Cuisine française, internationale et méditerranéenne</p>
+          <p class="phone-line">☎️ <strong>04 94 83 91 49</strong></p>
+        </div>
+        <div class="place-actions">
+          <a class="web-btn" target="_blank" rel="noopener" href="https://www.lannexe-restaurant-saint-raphael.fr/">🌐 Site web</a>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=L%E2%80%99Annexe%2C%2023%20rue%20Thiers%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>La Table Restaurant</h3>
+          <p>47 rue Thiers<br>Restaurant français</p>
+          <p class="phone-line">☎️ <strong>04 94 53 93 35</strong></p>
+        </div>
+        <div class="place-actions">
+          <span class="no-web">Site officiel non confirmé</span>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=La%20Table%20Restaurant%2C%2047%20rue%20Thiers%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>La Brasserie du Port</h3>
+          <p>2 place Amiral Ortoli<br>Brasserie française et méditerranéenne</p>
+          <p class="phone-line">☎️ <strong>09 83 43 62 94</strong></p>
+        </div>
+        <div class="place-actions">
+          <span class="no-web">Site officiel non confirmé</span>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=La%20Brasserie%20du%20Port%2C%202%20place%20Amiral%20Ortoli%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>Café Nomy</h3>
+          <p>130 quai Amiral Nomy, Vieux-Port<br>Brasserie / restaurant bistronomique</p>
+          <p class="phone-line">☎️ <strong>06 58 00 75 34</strong></p>
+        </div>
+        <div class="place-actions">
+          <a class="web-btn" target="_blank" rel="noopener" href="https://www.cafenomy.fr/">🌐 Site web</a>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Nomy%2C%20130%20quai%20Amiral%20Nomy%2C%20Vieux-Port%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+      <div class="place-card restaurant-card">
+        <div class="place-info">
+          <h3>Le Jardin Poncet</h3>
+          <p>6 avenue de Valescure – avenue Michel Gaillard<br>Restaurant bistronomique</p>
+          <p class="phone-line">☎️ <strong>04 94 95 25 00</strong></p>
+        </div>
+        <div class="place-actions">
+          <a class="web-btn" target="_blank" rel="noopener" href="https://lejardinponcet.com/">🌐 Site web</a>
+          <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Le%20Jardin%20Poncet%2C%206%20avenue%20de%20Valescure%20%E2%80%93%20avenue%20Michel%20Gaillard%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a>
+        </div>
+      </div>
+    
+    </div>
+    <p><small>Coordonnées vérifiées le 2 septembre 2026. Pour les établissements sans site officiel confirmé, aucun lien n’est affiché afin d’éviter de renvoyer vers un site non vérifié.</small></p>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+
+
+<section id="cinema" class="screen">
+  <div class="detail">
+    <h2>🎬 Cinéma Le Lido</h2>
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>Le Lido — Saint‑Raphaël</h3>
+        <p>90 avenue Victor Hugo, 83700 Saint‑Raphaël</p>
+        <p>Multiplexe de 7 salles climatisées, avec projection numérique et 3D.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/">🎞️ Site officiel</a>
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/FR/43/horaires-cinema-le-lido-saint-raphael.html">🕒 Horaires & séances</a>
+        <a class="web-btn" target="_blank" rel="noopener" href="https://cinemalido-straphael.com/FR/achat-place">🎟️ Réserver</a>
+        <a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Cin%C3%A9ma%20Le%20Lido%2C%2090%20avenue%20Victor%20Hugo%2C%20Saint-Rapha%C3%ABl">📍 Itinéraire</a>
+      </div>
+    </div>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+
+
+<section id="evenements" class="screen">
+  <div class="detail">
+    <h2>🎭 Événements & spectacles</h2>
+    <p>Retrouvez les concerts, spectacles, festivals, expositions, marchés et animations à Saint‑Raphaël et Fréjus.</p>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>☀️ Agenda Saint‑Raphaël</h3>
+        <p>Programme officiel de l’Office de Tourisme : événements, spectacles, concerts et animations.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.saint-raphael.com/fr/animation/agenda/">Voir l’agenda</a>
+      </div>
+    </div>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>🏛️ Agenda Fréjus</h3>
+        <p>Agenda officiel de la ville de Fréjus : concerts, théâtre, expositions, événements sportifs et festivals.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.frejus.fr/agenda/">Voir l’agenda</a>
+      </div>
+    </div>
+
+    <div class="place-card restaurant-card">
+      <div class="place-info">
+        <h3>🎟️ AggloScènes</h3>
+        <p>Programmation culturelle commune à Fréjus et Saint‑Raphaël, notamment au Théâtre Le Forum et dans les salles raphaëloises.</p>
+      </div>
+      <div class="place-actions">
+        <a class="web-btn" target="_blank" rel="noopener"
+           href="https://www.aggloscenes.com/">Voir les spectacles</a>
+      </div>
+    </div>
+
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="inventaire" class="screen">
+<div class="inventory-update-notice">
+  ⚠️ <strong>Inventaire en cours de mise à jour</strong><br>
+  <span>Les informations affichées peuvent être temporairement incomplètes.</span>
+</div>
+
+  <div class="detail">
+    <h2>📦 Inventaire de l’appartement</h2>
+    <p>Vous cherchez quelque chose ? Tapez son nom ou son emplacement.</p>
+    <input id="inventorySearch" class="inventory-search" type="search" placeholder="🔎 Rechercher : verre, bouilloire, assiette…" autocomplete="off">
+    <div class="inventory-toolbar" id="inventoryFilters"></div>
+    <div class="inventory-grid" id="inventoryGrid"></div>
+    <div id="inventoryEmpty" class="inventory-empty" style="display:none">Aucun objet trouvé.</div>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="commerces" class="screen">
+  <div class="detail">
+    <h2>🛍️ Commerces utiles</h2>
+    <div class="place-list">
+      <div class="place-card"><div><h3>MONOPRIX</h3><p>50 boulevard Félix Martin<br>Supermarché</p></div><a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=MONOPRIX%2C%2050%20boulevard%20F%C3%A9lix%20Martin%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a></div>
+<div class="place-card"><div><h3>Franprix</h3><p>25 Rue Victor Hugo<br>Supermarché / supérette</p></div><a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Franprix%2C%2025%20Rue%20Victor%20Hugo%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a></div>
+<div class="place-card"><div><h3>Intermarché EXPRESS Saint‑Raphaël</h3><p>104 avenue du Général Leclerc<br>Supermarché</p></div><a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Intermarch%C3%A9%20EXPRESS%20Saint%E2%80%91Rapha%C3%ABl%2C%20104%20avenue%20du%20G%C3%A9n%C3%A9ral%20Leclerc%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a></div>
+<div class="place-card"><div><h3>Boulangerie Pâtisserie Romain Corretel</h3><p>1 Rue d’Agay<br>Boulangerie-pâtisserie</p></div><a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Boulangerie%20P%C3%A2tisserie%20Romain%20Corretel%2C%201%20Rue%20d%E2%80%99Agay%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a></div>
+<div class="place-card"><div><h3>Pharmacie de la Mairie</h3><p>2 Rue Gambetta<br>Pharmacie</p></div><a class="map-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Pharmacie%20de%20la%20Mairie%2C%202%20Rue%20Gambetta%2C%20Saint-Rapha%C3%ABl%20France">📍 Itinéraire</a></div>
+    </div>
+    <p><small>Les horaires peuvent évoluer.</small></p>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="plages" class="screen">
+  <div class="detail">
+    <h2>🏖️ Plages & bord de mer</h2>
+    <p>La plage est située à environ <strong>300 mètres à pied</strong> de l’appartement.</p>
+    <ul>
+      <li>Plage du centre-ville / Veillat</li>
+      <li>Vieux-Port</li>
+      <li>Santa Lucia</li>
+      <li>Boulouris, Le Dramont et Agay pour découvrir d’autres plages et criques</li>
+    </ul>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="parking" class="screen">
+  <div class="detail">
+    <h2>🅿️ Stationnement</h2>
+    <ul>
+      <li>Deux parkings en bas de l’immeuble côté cour : gratuits, limités à 2 h avec disque bleu.</li>
+      <li>Parking Cagnat : payant et sécurisé, à proximité de la police municipale.</li>
+    </ul>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="activites" class="screen">
+  <div class="detail">
+    <h2>📷 À voir / À faire</h2>
+    <ul>
+      <li>Vieille ville et musée archéologique</li>
+      <li>Vieux-Port</li>
+      <li>Marchés de Saint‑Raphaël</li>
+      <li>Massif de l’Estérel</li>
+      <li>Kayak, paddle, plongée et sorties en mer</li>
+    </ul>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="pratique" class="screen">
+  <div class="detail">
+    <h2>ⓘ Infos pratiques</h2>
+    <ul>
+      <li>Maximum 5 voyageurs</li>
+      <li>Départ avant 11 h</li>
+      <li>Bien fermer la porte de l’appartement et celle de l’immeuble à chaque sortie</li>
+      <li>Respecter le calme après 22 h</li>
+      <li>Climatisation avec les fenêtres fermées</li>
+      <li>Poubelles dans les conteneurs du parking en bas de l’immeuble</li>
+      <li>Chiens autorisés sous conditions : maîtrisés, sans dégâts ni nuisances</li>
+    </ul>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="urgences" class="screen">
+  <div class="detail">
+    <h2>✚ Urgences</h2>
+    <p><strong>112</strong> — Numéro d’urgence européen</p>
+    <p><strong>15</strong> — SAMU</p>
+    <p><strong>17</strong> — Police</p>
+    <p><strong>18</strong> — Pompiers</p>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+<section id="meteo" class="screen">
+  <div class="detail">
+    <h2>🌤️ Météo à Saint‑Raphaël</h2>
+    <p><strong id="weatherDetailNow">Chargement de la météo en temps réel…</strong></p>
+    <div class="forecast" id="forecast"></div>
+    <p class="weather-status" id="weatherStatus">Connexion au service météo…</p>
+    <a class="back" href="#accueil">← Retour à l’accueil</a>
+  </div>
+</section>
+
+
+<script>
+(function(){
+  const LAT = 43.4252;
+  const LON = 6.7684;
+
+  function codeToWeather(code){
+    const map = {
+      0:["☀️","Ciel dégagé"],
+      1:["🌤️","Principalement dégagé"],
+      2:["⛅","Partiellement nuageux"],
+      3:["☁️","Couvert"],
+      45:["🌫️","Brouillard"],48:["🌫️","Brouillard givrant"],
+      51:["🌦️","Bruine légère"],53:["🌦️","Bruine"],55:["🌧️","Bruine forte"],
+      61:["🌦️","Pluie légère"],63:["🌧️","Pluie"],65:["🌧️","Pluie forte"],
+      71:["🌨️","Neige légère"],73:["🌨️","Neige"],75:["❄️","Forte neige"],
+      80:["🌦️","Averses légères"],81:["🌧️","Averses"],82:["⛈️","Fortes averses"],
+      95:["⛈️","Orage"],96:["⛈️","Orage avec grêle"],99:["⛈️","Fort orage avec grêle"]
+    };
+    return map[code] || ["🌤️","Conditions variables"];
+  }
+
+  function dayName(dateString){
+    const d = new Date(dateString + "T12:00:00");
+    return d.toLocaleDateString("fr-FR",{weekday:"short",day:"numeric"});
+  }
+
+  async function loadWeather(){
+    const status = document.getElementById("weatherStatus");
+    try{
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Europe%2FParis&forecast_days=5`;
+      const r = await fetch(url,{cache:"no-store"});
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      const data = await r.json();
+
+      const current = codeToWeather(data.current.weather_code);
+      const temp = Math.round(data.current.temperature_2m);
+      document.getElementById("weatherIcon").textContent = current[0];
+      document.getElementById("weatherTemp").textContent = temp + "°";
+      document.getElementById("weatherDesc").textContent = current[1];
+      document.getElementById("weatherDetailNow").textContent = `${current[0]} ${temp} °C — ${current[1]}`;
+
+      const target = document.getElementById("forecast");
+      target.innerHTML = "";
+      data.daily.time.forEach((day,i)=>{
+        const w = codeToWeather(data.daily.weather_code[i]);
+        const max = Math.round(data.daily.temperature_2m_max[i]);
+        const min = Math.round(data.daily.temperature_2m_min[i]);
+        const card = document.createElement("div");
+        card.className = "forecast-day";
+        card.innerHTML = `<div class="fday">${dayName(day)}</div><div class="ficon">${w[0]}</div><div>${w[1]}</div><div class="temps"><strong>${max}°</strong> / ${min}°</div>`;
+        target.appendChild(card);
+      });
+      status.textContent = "Météo actualisée automatiquement. Mise à jour de la page toutes les 15 minutes.";
+    }catch(e){
+      document.getElementById("weatherDesc").textContent = "Météo indisponible";
+      document.getElementById("weatherDetailNow").textContent = "Impossible de charger la météo actuellement.";
+      status.textContent = "Vérifiez la connexion Internet de l’iMac.";
+    }
+  }
+
+  loadWeather();
+  setInterval(loadWeather, 15 * 60 * 1000);
+})();
+</script>
+
+
+<script>
+/* ====== DONNÉES DISTANTES ====== */
+const REMOTE_CONFIG_URL = "https://script.google.com/macros/s/AKfycbzO55sj11Wvm5fDDPdPr9QnfCZA2mmvwje-bkHPsQQ1kQnL3HYGmNDxzZxuxWuDmN_z/exec";
+
+const DEFAULT_CONFIG = {
+  guestName: "",
+  welcomeMessage: "Profitez pleinement de votre séjour ! ♡",
+  stayStart: "",
+  stayEnd: "",
+  arrivalTime: "15:00",
+  departureTime: "11:00",
+  customNotice: "",
+  inventory: []
+};
+
+function formatDateFR(value) {
+  if (!value) return "";
+  const d = new Date(value + "T12:00:00");
+  return d.toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"});
+}
+
+function applyRemoteConfig(data) {
+  const cfg = Object.assign({}, DEFAULT_CONFIG, data || {});
+
+  const welcome = document.getElementById("welcomeMessage");
+  const guest = document.getElementById("guestLine");
+  const dates = document.getElementById("stayDates");
+  const arrival = document.getElementById("arrivalInfo");
+  const departure = document.getElementById("departureInfo");
+  const notice = document.getElementById("customNotice");
+
+  if (welcome) welcome.textContent = cfg.welcomeMessage || DEFAULT_CONFIG.welcomeMessage;
+  if (guest) guest.textContent = cfg.guestName ? "Bienvenue " + cfg.guestName + " !" : "";
+
+  const a = formatDateFR(cfg.stayStart);
+  const d = formatDateFR(cfg.stayEnd);
+  let dateText = "Bienvenue dans l’appartement.";
+  if (a && d) dateText = "Séjour du " + a + " au " + d;
+  else if (a) dateText = "Arrivée le " + a;
+  else if (d) dateText = "Départ le " + d;
+  if (dates) dates.textContent = dateText;
+
+  if (arrival) arrival.textContent = cfg.arrivalTime ? "🕒 Arrivée à partir de " + cfg.arrivalTime : "";
+  if (departure) departure.textContent = cfg.departureTime ? "🚪 Départ avant " + cfg.departureTime : "";
+
+  inventoryItems = mergeInventoryWithDefaults(cfg.inventory);
+    inventoryCategory = "Tous";
+    renderInventoryFilters();
+    renderInventory();
+
+  if (notice) {
+    if (cfg.customNotice) {
+      notice.style.display = "block";
+      notice.textContent = cfg.customNotice;
+    } else {
+      notice.style.display = "none";
+      notice.textContent = "";
+    }
+  }
+}
+
+let remoteNode = null;
+window.__airbnbConfig = function(data) {
+  applyRemoteConfig(data);
+  if (remoteNode) {
+    remoteNode.remove();
+    remoteNode = null;
+  }
+};
+
+function loadRemoteConfig() {
+  if (remoteNode) remoteNode.remove();
+  remoteNode = document.createElement("script");
+  const sep = REMOTE_CONFIG_URL.includes("?") ? "&" : "?";
+  remoteNode.src = REMOTE_CONFIG_URL + sep + "callback=__airbnbConfig&t=" + Date.now();
+  document.head.appendChild(remoteNode);
+}
+
+loadRemoteConfig();
+setInterval(loadRemoteConfig, 30000);
+</script>
+
+
+<script>
+/* ====== INVENTAIRE ======
+   Les données ci-dessous servent uniquement de base si aucun inventaire distant
+   n'a encore été enregistré depuis la page Admin.
+*/
+const INVENTORY_DEMO = [
+  {name:"Grandes assiettes blanches", qty:"≈ 11", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Assiettes grises", qty:"≈ 7", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Petites assiettes blanches", qty:"≈ 7", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Bols blancs", qty:"≈ 4", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Mugs", qty:"≈ 11", category:"Vaisselle", location:"Placard cuisine"},
+  {name:"Verres à pied", qty:"≈ 9", category:"Verres", location:"Placard cuisine"},
+  {name:"Bouilloire rouge", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Presse-agrumes manuel", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Pichet doseur", qty:"1", category:"Cuisine", location:"Cuisine"},
+  {name:"Petite casserole inox", qty:"1", category:"Cuisine", location:"Cuisine"}
+];
+
+function mergeInventoryWithDefaults(remoteItems){
+  const defaults = INVENTORY_DEMO.map(x => ({...x}));
+
+  if (!Array.isArray(remoteItems) || remoteItems.length === 0) {
+    return defaults;
+  }
+
+  const cleanRemote = remoteItems
+    .filter(x => x && (x.name || x.qty || x.category || x.location))
+    .map(x => ({
+      name: String(x.name || ""),
+      qty: String(x.qty || ""),
+      category: String(x.category || ""),
+      location: String(x.location || "")
+    }));
+
+  const key = s => String(s || "").trim().toLowerCase();
+  const remoteNames = new Set(cleanRemote.map(x => key(x.name)).filter(Boolean));
+
+  defaults.forEach(item => {
+    if (!remoteNames.has(key(item.name))) {
+      cleanRemote.push({...item});
+    }
+  });
+
+  return cleanRemote;
+}
+
+
+let inventoryItems = mergeInventoryWithDefaults([]);
+let inventoryCategory = "Tous";
+
+function norm(s){
+  return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+}
+function renderInventoryFilters(){
+  const box=document.getElementById("inventoryFilters");
+  if(!box) return;
+  const cats=["Tous", ...Array.from(new Set(inventoryItems.map(x=>x.category))).sort()];
+  box.innerHTML="";
+  cats.forEach(cat=>{
+    const b=document.createElement("button");
+    b.type="button";
+    b.className="inv-filter"+(cat===inventoryCategory?" active":"");
+    b.textContent=cat;
+    b.onclick=()=>{inventoryCategory=cat;renderInventoryFilters();renderInventory();};
+    box.appendChild(b);
+  });
+}
+function renderInventory(){
+  const grid=document.getElementById("inventoryGrid");
+  const empty=document.getElementById("inventoryEmpty");
+  const search=document.getElementById("inventorySearch");
+  if(!grid||!empty) return;
+  const q=norm(search?search.value:"");
+  const list=inventoryItems.filter(x=>{
+    const catOk=inventoryCategory==="Tous"||x.category===inventoryCategory;
+    const hay=norm([x.name,x.category,x.location,x.qty].join(" "));
+    return catOk && (!q||hay.includes(q));
+  });
+  grid.innerHTML="";
+  list.forEach(x=>{
+    const d=document.createElement("div");
+    d.className="inventory-item";
+    d.innerHTML="<h3>"+escapeInv(x.name)+"</h3><div class='inventory-meta'><b>Quantité :</b> "+escapeInv(x.qty)+"<br><b>Catégorie :</b> "+escapeInv(x.category)+"<br><b>Emplacement :</b> "+escapeInv(x.location)+"</div>";
+    grid.appendChild(d);
+  });
+  empty.style.display=list.length?"none":"block";
+}
+function escapeInv(s){
+  return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  const s=document.getElementById("inventorySearch");
+  if(s) s.addEventListener("input",renderInventory);
+  renderInventoryFilters();
+  renderInventory();
+});
+</script>
+
+</body>
+</html>
