@@ -546,8 +546,240 @@ body {
 }
 </style>
 
+
+<style id="ipad-layout-fix-v2">
+/* Correctif iPad Safari : on ne dépend plus du background-attachment
+   de Safari iOS/iPadOS, qui peut ne pas peindre l'image correctement. */
+@media (min-width: 768px) and (max-width: 1366px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: #7fb8de !important;
+  }
+
+  #accueil.dashboard-home {
+    position: relative;
+    isolation: isolate;
+    min-height: 100svh !important;
+    padding: 18px !important;
+    background: transparent !important;
+  }
+
+  #accueil.dashboard-home::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      linear-gradient(rgba(0,26,52,.10), rgba(0,26,52,.16)),
+      url("fond-ile-dor.jpg") center center / cover no-repeat;
+  }
+
+  #accueil.dashboard-home::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom,
+      rgba(0,38,72,.05) 0%,
+      rgba(0,38,72,.02) 48%,
+      rgba(0,38,72,.12) 100%);
+    pointer-events: none;
+  }
+
+  .dash-wrap {
+    width: min(1120px, 100%) !important;
+    min-height: calc(100svh - 36px) !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(250px,.82fr) minmax(0,1.35fr) !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 14px !important;
+    align-content: start !important;
+  }
+
+  .hero-zone {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    padding: 8px 16px 16px !important;
+    text-align: center !important;
+    color: white !important;
+  }
+
+  .hero-zone h1 {
+    font-family: "Snell Roundhand","Segoe Script","Brush Script MT",cursive !important;
+    font-size: clamp(54px, 8vw, 82px) !important;
+    line-height: .96 !important;
+    color: white !important;
+    margin: 10px 0 5px !important;
+    text-shadow: 0 4px 18px rgba(0,31,61,.55) !important;
+  }
+
+  .brand, .hero-message, .hero-guest {
+    color: white !important;
+    text-shadow: 0 3px 14px rgba(0,31,61,.55) !important;
+  }
+
+  .left-rail {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+  }
+
+  .info-box {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+  }
+
+  .glass {
+    background: rgba(255,255,255,.90) !important;
+    color: #082d59 !important;
+    border-radius: 22px !important;
+    box-shadow: 0 12px 30px rgba(4,30,55,.20) !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .wifi-box {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) 88px !important;
+    align-items: center !important;
+  }
+
+  .wifi-box .qr-small,
+  .qr-small {
+    width: 86px !important;
+    height: 86px !important;
+    max-width: 86px !important;
+    max-height: 86px !important;
+    object-fit: contain !important;
+  }
+
+  .photo-grid {
+    grid-column: 1 / -1 !important;
+    grid-row: 3 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+    gap: 11px !important;
+    margin-top: 4px !important;
+    align-self: auto !important;
+  }
+
+  .photo-card {
+    min-width: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  .photo-card img {
+    width: 100% !important;
+    height: 92px !important;
+    object-fit: cover !important;
+  }
+
+  .photo-card div {
+    min-height: 72px !important;
+    padding: 9px 11px 11px !important;
+  }
+
+  .photo-card b { font-size: 17px !important; }
+  .photo-card span { font-size: 12px !important; }
+
+  .dash-footer {
+    grid-column: 1 / -1 !important;
+    grid-row: 4 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  /* Pages intérieures */
+  .screen:not(#accueil) {
+    min-height: 100svh !important;
+    padding: 20px !important;
+  }
+
+  .detail {
+    width: min(980px,100%) !important;
+    padding: 26px !important;
+  }
+
+  .detail h2 { font-size: 34px !important; }
+  .detail p, .detail li { font-size: 18px !important; }
+
+  .qr-big {
+    width: 220px !important;
+    height: 220px !important;
+    max-width: 220px !important;
+    max-height: 220px !important;
+  }
+}
+
+/* iPad portrait : une colonne pour les deux blocs d'information,
+   tout en gardant les vignettes en 2 colonnes. */
+@media (min-width: 768px) and (max-width: 900px) and (orientation: portrait) {
+  .dash-wrap {
+    grid-template-columns: 1fr !important;
+  }
+  .left-rail {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+  .info-box {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+  }
+  .photo-grid {
+    grid-column: 1 !important;
+    grid-row: 4 !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  }
+  .dash-footer {
+    grid-column: 1 !important;
+    grid-row: 5 !important;
+  }
+}
+</style>
+
 </head>
 <body>
+
+<script id="safari-home-fix">
+/* Empêche Safari/iPhone de restaurer automatiquement l'ancienne position
+   de défilement au chargement : la page s'ouvre toujours sur l'accueil. */
+(function () {
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  function forceHomeOnFreshOpen() {
+    try {
+      history.replaceState(null, "", location.pathname + location.search + "#accueil");
+    } catch (e) {}
+    window.scrollTo(0, 0);
+    const home = document.getElementById("accueil");
+    if (home) home.scrollIntoView({behavior:"auto", block:"start"});
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    requestAnimationFrame(forceHomeOnFreshOpen);
+    setTimeout(forceHomeOnFreshOpen, 80);
+    setTimeout(forceHomeOnFreshOpen, 350);
+  });
+
+  window.addEventListener("pageshow", function () {
+    setTimeout(forceHomeOnFreshOpen, 0);
+  });
+})();
+</script>
+
 
 
 <section id="accueil" class="screen dashboard-home">
